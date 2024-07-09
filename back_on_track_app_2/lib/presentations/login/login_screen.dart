@@ -1,4 +1,5 @@
-import 'package:back_on_track_app_2/presentations/select_type_of_user_screen.dart';
+import 'package:back_on_track_app_2/presentations/doctor/doctor_home_screen.dart';
+import 'package:back_on_track_app_2/presentations/init/select_type_of_user_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -68,7 +69,7 @@ class LoginScreen extends StatelessWidget {
                         onPressed: () {
                           String inputEmail = emailController.text;
                           String inputPassword = pswdController.text;
-                          if (inputEmail.isEmpty) {
+                          if (inputEmail.isEmpty || inputPassword.isEmpty) {
                             SnackBar emptyFields = SnackBar(
                               content: const Text('Complete todos los campos.',
                                   style: TextStyle(color: Colors.black)),
@@ -82,7 +83,7 @@ class LoginScreen extends StatelessWidget {
                             ScaffoldMessenger.of(context).showSnackBar(emptyFields);
                           }
                           else{
-                            context.pushNamed(SelectType.name, extra: emailController.text); //goNamed
+                            context.pushNamed(DoctorHomeScreen.name); //goNamed
                           }
                         },
                         child: const Text('Ingresar'),

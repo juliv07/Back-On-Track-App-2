@@ -1,5 +1,5 @@
 
-import 'package:back_on_track_app_2/presentations/patient_data.dart';
+import 'package:back_on_track_app_2/presentations/patient/patient_data_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -42,20 +42,36 @@ List patients = [
     'No te pierdas el día a día de este proyecto. Seguí a Back On Track en Instagram: @backontrack.meca'
   ];
 
-  List settings = [
-    'Editar mi perfil',
-    'Mis pacientes',
-    'Cambiar contraseña',
-    'Ajustes de notificaciones',
-    'Cerrar sesión',
-  ];
+class Setting{
+  String title;
+  Icon leading;
+  Icon trailing;
+  String route;
 
-  List<IconData> settingsIcons = [
-  Icons.edit,
-  Icons.people,
-  Icons.key,
-  Icons.edit_notifications,
-  Icons.exit_to_app,
+  Setting({
+    required this.title,
+    required this.leading,
+    required this.trailing,
+    required this.route,
+  });
+}
+
+List <Setting> settings = [
+  Setting(title: 'Editar mi perfil',
+          leading: const Icon(Icons.edit), 
+          trailing: const Icon(Icons.arrow_forward_ios_rounded),
+          route:'/doctorEditProfile'
+          ),
+  Setting(title: 'Mis pacientes',
+          leading: const Icon(Icons.people), 
+          trailing: const Icon(Icons.arrow_forward_ios_rounded),
+          route:'/doctorViewPatients'
+          ),
+  Setting(title: 'Ajustes de cuenta',
+          leading: const Icon(Icons.settings),
+          trailing: const Icon(Icons.arrow_forward_ios_rounded),
+          route:'/doctorAccountSettings'
+          ),    
 ];
 
 // ignore: must_be_immutable
@@ -184,16 +200,18 @@ class _NavigationExampleState extends State<NavigationExample> {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: newsTitle.length,
+                  itemCount: settings.length,
                   itemBuilder: (context, index) {
                     return Card(
                       color: const Color.fromARGB(255, 194, 245, 255),
                       child: ListTile(
-                        title: Text(settings[index],
+                        title: Text(settings[index].title,
                         style: const TextStyle(fontSize: 20)),
-                        leading: Icon(settingsIcons[index]),
-                        trailing: const Icon(Icons.arrow_forward_ios_rounded
-                        ),
+                        leading: settings[index].leading,
+                        trailing: settings[index].trailing,
+                        onTap: () {
+                          context.push(settings[index].route);
+                        },
                       ),
                     );
                   }

@@ -1,5 +1,5 @@
-import 'package:back_on_track_app_2/presentations/login_screen.dart';
-import 'package:back_on_track_app_2/presentations/select_type_of_user_screen.dart';
+import 'package:back_on_track_app_2/presentations/login/login_screen.dart';
+import 'package:back_on_track_app_2/presentations/init/select_type_of_user_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

@@ -1,5 +1,5 @@
-import 'package:back_on_track_app_2/presentations/doctor_signup_screen.dart';
-import 'package:back_on_track_app_2/presentations/patient_signup_screen.dart';
+import 'package:back_on_track_app_2/presentations/doctor/doctor_signup_screen.dart';
+import 'package:back_on_track_app_2/presentations/patient/patient_signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

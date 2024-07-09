@@ -1,8 +1,9 @@
-import 'package:back_on_track_app_2/presentations/patient_home_screen.dart';
+import 'package:back_on_track_app_2/presentations/patient/patient_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
+// ignore: must_be_immutable
 class PatientSignUpScreen extends StatelessWidget {
   static const String name = 'patientSignup';
   PatientSignUpScreen({super.key});
