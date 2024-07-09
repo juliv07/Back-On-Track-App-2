@@ -117,6 +117,12 @@ class PatientSignUpScreen extends StatelessWidget {
                     String inputWeight = weightController.text;
                     String inputPreviousInfo = previousInfoController.text;
 
+                    if(inputName.isEmpty || inputSurname.isEmpty || inputPhone.isEmpty || 
+                    inputBirthYear.isEmpty || inputEmail.isEmpty || inputPswd.isEmpty ||
+                    inputHeight.isEmpty || inputWeight.isEmpty || inputPreviousInfo.isEmpty){
+                      
+                    }
+
                     context.goNamed(PatientHomeScreen.name);
                   }, 
                   child: const Text('Registrarse'))
