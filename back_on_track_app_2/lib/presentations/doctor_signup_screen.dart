@@ -88,7 +88,72 @@ class DoctorSignUpScreen extends StatelessWidget {
                     String inputPswd = pswdController.text;
                     String inputHealthCenter = healthCenterController.text;
 
-                    context.goNamed(DoctorHomeScreen.name);
+                    if(inputName.isEmpty || inputSurname.isEmpty || inputPhone.isEmpty ||
+                    inputEmail.isEmpty || inputEmail.isEmpty || inputPswd.isEmpty || 
+                    inputHealthCenter.isEmpty){
+                      SnackBar emptyFields = SnackBar(
+                        content: const Text('Complete todos los campos.',
+                          style: TextStyle(color: Colors.black)),
+                        backgroundColor: const Color.fromARGB(255, 255, 251, 0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        duration: const Duration(seconds: 2),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(emptyFields);
+                      return;
+                    }
+
+                    final phoneIsNumeric = inputPhone.runes.every((r) => r >= 48 && r <= 57);
+                      if(phoneIsNumeric == false){
+                        SnackBar phoneNotNumeric = SnackBar(
+                        content: const Text('Número de teléfono no válido.',
+                            style: TextStyle(color: Colors.black)),
+                        backgroundColor: const Color.fromARGB(255, 255, 251, 0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        duration: const Duration(seconds: 2),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(phoneNotNumeric);
+                      return;
+                    }
+
+                    int atCount = '@'.allMatches(inputEmail).length;
+                    if(atCount==0 || atCount > 1){
+                      SnackBar wrongEmail = SnackBar(
+                      content: const Text('Correo electrónico no válido.',
+                          style: TextStyle(color: Colors.black)),
+                      backgroundColor: const Color.fromARGB(255, 255, 251, 0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      duration: const Duration(seconds: 2),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(wrongEmail);
+                    return;
+                    }
+
+                    if(inputPswd.length<8){
+                      SnackBar pswdTooShort = SnackBar(
+                      content: const Text('La contraseña debe contener al menos 8 dígitos.',
+                          style: TextStyle(color: Colors.black)),
+                      backgroundColor: const Color.fromARGB(255, 255, 251, 0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      duration: const Duration(seconds: 2),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(pswdTooShort);
+                    return;
+                    }
+                    
+                    if(inputName.isEmpty == false && inputSurname.isEmpty == false && 
+                    inputPhone.isEmpty == false && inputEmail.isEmpty == false && 
+                    inputPswd.isEmpty == false && inputHealthCenter.isEmpty == false && 
+                    phoneIsNumeric && atCount==1 && inputPswd.length>=8){
+                      context.goNamed(DoctorHomeScreen.name);
+                    }
                   }, 
                   child: const Text('Registrarse'),
                 )
