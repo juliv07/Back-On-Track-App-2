@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 List newsTitle = [
     'Grandes avances en Back On Track','El futuro se ve brillante',
@@ -12,20 +13,39 @@ List newsTitle = [
     'No te pierdas el día a día de este proyecto. Seguí a Back On Track en Instagram: @backontrack.meca'
   ];
 
-  List settings = [
-    'Editar mi perfil',
-    'Mi doctor',
-    'Cambiar contraseña',
-    'Ajustes de notificaciones',
-    'Cerrar sesión',
-  ];
+class Setting{
+  String title;
+  Icon leading;
+  Icon trailing;
+  String route;
 
-  List<IconData> settingsIcons = [
-  Icons.edit,
-  Icons.medical_information,
-  Icons.key,
-  Icons.edit_notifications,
-  Icons.exit_to_app,
+  Setting({
+    required this.title,
+    required this.leading,
+    required this.trailing,
+    required this.route,
+  });
+}
+
+List <Setting> settings =[
+  Setting(
+    title: 'Editar perfil', 
+    leading: const Icon(Icons.edit), 
+    trailing: const Icon(Icons.arrow_forward_ios_rounded),
+    route: '/patientEditProfile'
+    ),
+  Setting(
+    title: 'Ajustes de cuenta', 
+    leading: const Icon(Icons.settings), 
+    trailing: const Icon(Icons.arrow_forward_ios_rounded),
+    route: '/patientAccountSettings'
+    ),
+  Setting(
+    title: 'Mi doctor', 
+    leading: const Icon(Icons.medical_information), 
+    trailing: const Icon(Icons.arrow_forward_ios_rounded),
+    route: '/patientViewDoctor'
+    )
 ];
 
 class PatientHomeScreen extends StatelessWidget {
@@ -130,16 +150,18 @@ class _NavigationExampleState extends State<NavigationExample> {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: newsTitle.length,
+                  itemCount: settings.length,
                   itemBuilder: (context, index) {
                     return Card(
                       color: const Color.fromARGB(255, 194, 245, 255),
                       child: ListTile(
-                        title: Text(settings[index],
+                        title: Text(settings[index].title,
                         style: const TextStyle(fontSize: 20)),
-                        leading: Icon(settingsIcons[index]),
-                        trailing: const Icon(Icons.arrow_forward_ios_rounded
-                        ),
+                        leading: settings[index].leading,
+                        trailing: settings[index].trailing,
+                        onTap: () {
+                          context.push(settings[index].route);
+                        },
                       ),
                     );
                   }

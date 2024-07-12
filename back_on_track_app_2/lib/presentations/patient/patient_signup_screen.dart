@@ -155,7 +155,7 @@ class PatientSignUpScreen extends StatelessWidget {
                     }
 
                     final birthYearIsNumeric = inputBirthYear.runes.every((r) => r >= 48 && r <= 57);
-                      if(birthYearIsNumeric == false){
+                      if(birthYearIsNumeric == false || int.parse(inputBirthYear)>=2024){
                         SnackBar birthYearNotNumeric = SnackBar(
                         content: const Text('Año de nacimiento no válido.',
                             style: TextStyle(color: Colors.black)),
@@ -232,8 +232,9 @@ class PatientSignUpScreen extends StatelessWidget {
                     inputPhone.isEmpty == false &&  inputBirthYear.isEmpty == false && 
                     inputEmail.isEmpty == false && inputPswd.isEmpty == false &&
                     inputHeight.isEmpty == false && inputWeight.isEmpty == false &&
-                    inputPreviousInfo.isEmpty == false && phoneIsNumeric && birthYearIsNumeric &&
-                    atCount==1 && inputPswd.length>=8 && heightIsNumeric && weightIsNumeric){
+                    inputPreviousInfo.isEmpty == false && phoneIsNumeric && birthYearIsNumeric && 
+                    int.parse(inputBirthYear)>=2024 && atCount==1 && inputPswd.length>=8 && 
+                    heightIsNumeric && weightIsNumeric){
                       context.goNamed(PatientHomeScreen.name);
                     }
                   }, 

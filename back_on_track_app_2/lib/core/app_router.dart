@@ -9,10 +9,13 @@ import 'package:back_on_track_app_2/presentations/login/logout_screen.dart';
 import 'package:back_on_track_app_2/presentations/password_settings/change_password_screen.dart';
 import 'package:back_on_track_app_2/presentations/password_settings/new_password_screen.dart';
 import 'package:back_on_track_app_2/presentations/password_settings/password_verification_code_screen.dart';
+import 'package:back_on_track_app_2/presentations/patient/patient_account_settings_screen.dart';
 import 'package:back_on_track_app_2/presentations/patient/patient_data_screen.dart';
+import 'package:back_on_track_app_2/presentations/patient/patient_edit_profile_screen.dart';
 import 'package:back_on_track_app_2/presentations/patient/patient_home_screen.dart';
 import 'package:back_on_track_app_2/presentations/patient/patient_signup_screen.dart';
 import 'package:back_on_track_app_2/presentations/init/select_type_of_user_screen.dart';
+import 'package:back_on_track_app_2/presentations/patient/patient_view_doctor_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
@@ -107,5 +110,23 @@ final appRouter = GoRouter(
       name: NewPasswordScreen.name,
       path: '/newPassword',
       builder: (context, state) =>  NewPasswordScreen()
+    ),
+
+  GoRoute(
+      name: PatientEditProfileScreen.name,
+      path: '/patientEditProfile',
+      builder: (context, state) =>  PatientEditProfileScreen()
+    ),
+
+  GoRoute(
+      name: PatientViewDoctorScreen.name,
+      path: '/patientViewDoctor',
+      builder: (context, state) =>  PatientViewDoctorScreen()
+    ),
+  
+  GoRoute(
+      name: PatientAccountSettingsScreen.name,
+      path: '/patientAccountSettings',
+      builder: (context, state) =>  PatientAccountSettingsScreen()
     ),
 ]);
