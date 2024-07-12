@@ -128,7 +128,9 @@ class _NavigationExampleState extends State<NavigationExample> {
 
         //BLUETOOTH
         Center(
-          child: ElevatedButton(onPressed:(){}, child: const Text('Conectar')),
+          child: ElevatedButton(onPressed:(){
+            context.push('/btConnection');
+          }, child: const Text('Conectar')),
         ),
 
         //PROFILE

@@ -233,7 +233,7 @@ class PatientSignUpScreen extends StatelessWidget {
                     inputEmail.isEmpty == false && inputPswd.isEmpty == false &&
                     inputHeight.isEmpty == false && inputWeight.isEmpty == false &&
                     inputPreviousInfo.isEmpty == false && phoneIsNumeric && birthYearIsNumeric && 
-                    int.parse(inputBirthYear)>=2024 && atCount==1 && inputPswd.length>=8 && 
+                    int.parse(inputBirthYear)<=2024 && atCount==1 && inputPswd.length>=8 && 
                     heightIsNumeric && weightIsNumeric){
                       context.goNamed(PatientHomeScreen.name);
                     }
