@@ -1,4 +1,5 @@
 import 'package:back_on_track_app_2/presentations/patient/patient_home_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -17,6 +18,8 @@ class PatientSignUpScreen extends StatelessWidget {
   TextEditingController heightController = TextEditingController();
   TextEditingController weightController = TextEditingController();
   TextEditingController previousInfoController = TextEditingController();
+
+  FirebaseFirestore db = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -235,6 +238,22 @@ class PatientSignUpScreen extends StatelessWidget {
                     inputPreviousInfo.isEmpty == false && phoneIsNumeric && birthYearIsNumeric && 
                     int.parse(inputBirthYear)<=2024 && atCount==1 && inputPswd.length>=8 && 
                     heightIsNumeric && weightIsNumeric){
+
+                      final data = {
+                        'isDoctor':false,
+                        'name':inputName,
+                        'surname':inputSurname,
+                        'phone':inputPhone,
+                        'birthYear':inputBirthYear,
+                        'email':inputEmail,
+                        'password':inputPswd,
+                        'height':inputHeight,
+                        'weight':inputWeight,
+                        'previousInfo':inputPreviousInfo,                        
+                      };
+                      
+                      db.collection('users').add(data).then((documentSnapshot) => print("Added Data with ID: ${documentSnapshot.id}"));
+
                       context.goNamed(PatientHomeScreen.name);
                     }
                   }, 

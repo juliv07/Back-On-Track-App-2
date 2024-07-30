@@ -1,5 +1,6 @@
 import 'package:back_on_track_app_2/presentations/doctor/doctor_home_screen.dart';
 import 'package:back_on_track_app_2/presentations/init/select_type_of_user_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -11,6 +12,8 @@ class LoginScreen extends StatelessWidget {
 
   TextEditingController emailController = TextEditingController();
   TextEditingController pswdController = TextEditingController();
+
+  FirebaseFirestore db = FirebaseFirestore.instance;
 
   //Doctor midoctor = Doctor();
 
@@ -66,7 +69,7 @@ class LoginScreen extends StatelessWidget {
                         ),
 
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           String inputEmail = emailController.text;
                           String inputPassword = pswdController.text;
                           if (inputEmail.isEmpty || inputPassword.isEmpty) {
@@ -82,8 +85,29 @@ class LoginScreen extends StatelessWidget {
                             );
                             ScaffoldMessenger.of(context).showSnackBar(emptyFields);
                           }
-                          else{
+                          
+                          final firebaseData = await db
+                            .collection('users')
+                            .where('email', isEqualTo: inputEmail)
+                            .where('password', isEqualTo: inputPassword)
+                            .get();
+
+                          if(firebaseData.docs.isNotEmpty){
                             context.pushNamed(DoctorHomeScreen.name); //goNamed
+                          }
+
+                          if(firebaseData.docs.isEmpty){
+                            SnackBar wrongEmailOrPassword = SnackBar(
+                              content: const Text('Usuario o contraseña incorrectos. Intente de nuevo.',
+                                  style: TextStyle(color: Colors.black)),
+                              backgroundColor:
+                                  const Color.fromARGB(181, 24, 241, 107),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              duration: const Duration(seconds: 2),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(wrongEmailOrPassword);
                           }
                         },
                         child: const Text('Ingresar'),
