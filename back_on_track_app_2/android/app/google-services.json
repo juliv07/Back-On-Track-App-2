@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "509315938564",
+    "project_id": "back-on-track-46f4e",
+    "storage_bucket": "back-on-track-46f4e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509315938564:android:4fbbf580ebdc762999b851",
+        "android_client_info": {
+          "package_name": "com.example.firebase_prueba_2024"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1S2t9MWIYYwDYgsjIiLeTxsO-WQzm1qk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509315938564:android:8db9ea4e6db41bf099b851",
+        "android_client_info": {
+          "package_name": "com.ort.backontrack"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1S2t9MWIYYwDYgsjIiLeTxsO-WQzm1qk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
