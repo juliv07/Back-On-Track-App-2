@@ -1,4 +1,4 @@
-import 'package:back_on_track_app_2/login_widget_tree.dart';
+import 'package:back_on_track_app_2/firebase_auth/login_widget_tree.dart';
 import 'package:back_on_track_app_2/presentations/doctor/doctor_account_settings_screen.dart';
 import 'package:back_on_track_app_2/presentations/doctor/doctor_edit_profile_screen.dart';
 import 'package:back_on_track_app_2/presentations/doctor/doctor_home_screen.dart';
@@ -21,7 +21,7 @@ import 'package:back_on_track_app_2/presentations/patient/patient_view_doctor_sc
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
-  initialLocation: "/loginWidgetTree",
+  initialLocation: "/initialScreen",
 
   routes: [
   GoRoute(
