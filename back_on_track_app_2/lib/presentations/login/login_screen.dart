@@ -1,10 +1,12 @@
 import 'package:back_on_track_app_2/presentations/doctor/doctor_home_screen.dart';
+import 'package:back_on_track_app_2/providers/id_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 // ignore: must_be_immutable
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerWidget {
   static const String name = 'login';
 
   LoginScreen({super.key});
@@ -21,7 +23,7 @@ class LoginScreen extends StatelessWidget {
   ];*/
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
@@ -89,6 +91,11 @@ class LoginScreen extends StatelessWidget {
                       .where('email', isEqualTo: inputEmail)
                       .where('password', isEqualTo: inputPassword)
                       .get();
+
+                      //ref.read(idProvider.notifier).state = db.collection('users').where('email',isEqualTo: inputEmail).get();
+                      //ref.read(idProvider.notifier).state = db.collection('users').doc
+
+                      print(db.collection('users').where('email',isEqualTo: inputEmail).get());
 
                       if(firebaseData.docs.isNotEmpty){
                         context.pushNamed(DoctorHomeScreen.name); //goNamed

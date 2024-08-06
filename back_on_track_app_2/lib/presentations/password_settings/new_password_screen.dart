@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -8,6 +9,8 @@ class NewPasswordScreen extends StatelessWidget {
 
   TextEditingController pswdController = TextEditingController();
   TextEditingController repeatPswdController = TextEditingController();
+
+  FirebaseFirestore db = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +106,7 @@ class NewPasswordScreen extends StatelessWidget {
 
                     if(inputPswd.isEmpty == false && inputRepeatPswd.isEmpty == false &&
                     inputPswd.length>=8 && inputPswd == inputRepeatPswd){
+                      db.collection('users').doc().update({'password':inputPswd});
                       context.push('/login');
                     }
                   }, 
