@@ -1,4 +1,4 @@
-import 'package:back_on_track_app_2/firebase_auth/auth.dart';
+/*import 'package:back_on_track_app_2/firebase_auth/auth.dart';
 import 'package:back_on_track_app_2/presentations/init/initial_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -109,4 +109,4 @@ class _LoginAuthScreenState extends State<LoginAuthScreen> {
       )
     );
   }
-}
+}*/

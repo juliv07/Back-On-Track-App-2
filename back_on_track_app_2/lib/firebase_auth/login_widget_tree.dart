@@ -1,4 +1,4 @@
-import 'package:back_on_track_app_2/firebase_auth/auth.dart';
+/*import 'package:back_on_track_app_2/firebase_auth/auth.dart';
 import 'package:back_on_track_app_2/presentations/doctor/doctor_home_screen.dart';
 import 'package:back_on_track_app_2/firebase_auth/login_auth_screen.dart';
 import 'package:back_on_track_app_2/presentations/patient/patient_home_screen.dart';
@@ -69,4 +69,4 @@ class _LoginWidgetTreeState extends State<LoginWidgetTree> {
       },
     );
   }
-}
+}*/

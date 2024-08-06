@@ -1,4 +1,7 @@
+import 'package:back_on_track_app_2/providers/userDataProvider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class ProfileSetting{
@@ -16,16 +19,32 @@ class ProfileSetting{
   }
 
 List <ProfileSetting> profileSettings = [
-  ProfileSetting(title: 'Nombre', subtitle: 'Dr. Nefario', trailing: const Icon(Icons.edit), route: '/editName'),
-  ProfileSetting(title: 'Institución', subtitle: 'Hospital Italiano', trailing: const Icon(Icons.edit), route: '/editInfo'),
+  ProfileSetting(
+    title: 'Nombre', 
+    subtitle: '', 
+    trailing: const Icon(Icons.edit), 
+    route: '/editName'),
+
+  ProfileSetting(
+    title: 'Institución', 
+    subtitle: '', 
+    trailing: const Icon(Icons.edit), 
+    route: '/editInfo'),
 ];
 
-class DoctorEditProfileScreen extends StatelessWidget {
-  const DoctorEditProfileScreen({super.key});
+class DoctorEditProfileScreen extends ConsumerWidget {
+  DoctorEditProfileScreen({super.key});
   static const String name = 'doctorEditProfile';
 
+  FirebaseFirestore db = FirebaseFirestore.instance;
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+
+    final userEmail = ref.watch(emailProvider);
+
+    final name = await db.collection('users').where({'email', isEqualTo: userEmail})
+
     return Scaffold(
       appBar: AppBar(title: const Text('Editar perfil')),
       body: Center(
