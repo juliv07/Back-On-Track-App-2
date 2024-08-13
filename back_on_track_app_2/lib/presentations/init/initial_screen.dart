@@ -28,7 +28,7 @@ class InitialScreen extends StatelessWidget {
                 onPressed: () {
                   context.pushNamed(LoginScreen.name);
                 },
-                child: const Text('Iniciar Sesión')),
+                child: const Text('Iniciar sesión')),
             ElevatedButton(
                 onPressed: () {
                   context.pushNamed(SelectType.name);

@@ -1,4 +1,6 @@
+import 'package:back_on_track_app_2/entities/User.dart';
 import 'package:back_on_track_app_2/presentations/doctor/doctor_home_screen.dart';
+import 'package:back_on_track_app_2/presentations/patient/patient_home_screen.dart';
 import 'package:back_on_track_app_2/providers/userDataProvider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -95,7 +97,60 @@ class LoginScreen extends ConsumerWidget {
                       ref.read(emailProvider.notifier).state = inputEmail;
 
                       if(firebaseData.docs.isNotEmpty){
-                        context.pushNamed(DoctorHomeScreen.name); //goNamed
+                        DocumentSnapshot doc = firebaseData.docs.first;
+                        var data = doc.data() as Map<String, dynamic>;
+                        
+                        bool isDoctorFromDB = data['isDoctor'];
+                        String nameFromDB = data['name'] ?? 'No disponible';
+                        String surnameFromDB = data['surname'] ?? 'No disponible';
+                        String emailFromDB = data['email'] ?? 'No disponible';
+                        String phoneFromDB = data['phone'] ?? 'No disponible';
+                        String passwordFromDB = data['password'] ?? 'No disponible';
+                        String assignedDoctorFromDB = data['assignedDoctor'] ?? 'No disponible';
+                        int birthYearFromDB = int.tryParse(['birhtYear'].toString()) ?? 0;
+                        double heightFromDB = double.tryParse(['height'].toString()) ?? 0.0;
+                        double weightFromDB = double.tryParse(data['weight'].toString()) ?? 0.0;
+                        String previousInfoFromDB = data['previousInfo'] ?? 'No disponible';
+                        List<String> assignedPatientsFromDB = [];
+                        if (data['assignedPatients'] != null) {
+                            assignedPatientsFromDB = List<String>.from(data['assignedPatients']);
+                          }  else {
+                          // Valor por defecto si el campo no está presente
+                          assignedPatientsFromDB = ['No disponible'];
+                        }
+                        String healthCenterFromDB = data['healthCenter'] ?? 'No disponible';
+                        
+                        if(isDoctorFromDB){
+                          ref.read(userInfoProvider.notifier).state =
+                            User(
+                              isDoctor: isDoctorFromDB, 
+                              name: nameFromDB, 
+                              surname: surnameFromDB, 
+                              email: emailFromDB, 
+                              password: passwordFromDB, 
+                              phone: phoneFromDB, 
+                              assignedPatients: assignedPatientsFromDB, 
+                              healthCenter: healthCenterFromDB
+                          );
+                          context.pushNamed(DoctorHomeScreen.name);
+                        }
+                        else{
+                          ref.read(userInfoProvider.notifier).state =
+                            User(
+                              isDoctor: isDoctorFromDB, 
+                              name: nameFromDB, 
+                              surname: surnameFromDB, 
+                              email: emailFromDB, 
+                              password: passwordFromDB, 
+                              phone: phoneFromDB, 
+                              assignedDoctor: assignedDoctorFromDB,
+                              birthYear: birthYearFromDB,
+                              height: heightFromDB,
+                              weight: weightFromDB,
+                              previousInfo: previousInfoFromDB
+                          );
+                          context.pushNamed(PatientHomeScreen.name);
+                        } //goNamed
                       }
 
                       if(firebaseData.docs.isEmpty){
@@ -120,3 +175,16 @@ class LoginScreen extends ConsumerWidget {
     );  
   }
 }
+
+Future<void> guardarUsuario(String id, String nombre, int edad, double altura) async {
+  try {
+    await db.collection('users').doc(id).set({
+      'nombre': nombre,
+      'edad': edad,
+      'altura': altura,
+    });
+    print('Usuario guardado con éxito');
+  } catch (e) {
+    print('Error al guardar usuario: $e');
+  }
+} 

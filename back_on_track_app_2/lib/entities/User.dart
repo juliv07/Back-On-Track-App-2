@@ -2,20 +2,20 @@ class User {
   String name;
   String surname;
   String email;
-  int phone;
+  String phone;
   String password;
 
   bool isDoctor;
 
   //Patients:
-  String? asignedDoctor;
+  String? assignedDoctor;
   int? birthYear;
   double? height;
   double? weight;
   String? previousInfo;
 
   //Doctors:
-  List<String>? asignedPatients; //Signo de pregunta hace que pueda ser null
+  List<String>? assignedPatients; //Signo de pregunta hace que pueda ser null
   String? healthCenter;
 
   User({
@@ -25,12 +25,12 @@ class User {
     required this.email,
     required this.password,
     required this.phone,
-    this.asignedDoctor,
+    this.assignedDoctor,
     this.birthYear,
     this.height,
     this.weight,
     this.previousInfo,
-    this.asignedPatients,
+    this.assignedPatients,
     this.healthCenter,
   });
 }

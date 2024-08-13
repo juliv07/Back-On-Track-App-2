@@ -1,34 +1,10 @@
 
+import 'package:back_on_track_app_2/entities/User.dart';
 import 'package:back_on_track_app_2/presentations/patient/patient_data_screen.dart';
+import 'package:back_on_track_app_2/providers/userDataProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-List patients = [
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-    'Sandra Casandra',
-  ];
 
   List newsTitle = [
     'Grandes avances en Back On Track','El futuro se ve brillante',
@@ -75,13 +51,14 @@ List <Setting> settings = [
 ];
 
 // ignore: must_be_immutable
-class DoctorHomeScreen extends StatelessWidget {
+class DoctorHomeScreen extends ConsumerWidget {
+
   static const String name = 'doctorHome';
   final bool doctor;
   const DoctorHomeScreen({super.key, this.doctor = true});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     return const MaterialApp(
       home: NavigationExample(),
     );
@@ -100,128 +77,155 @@ class _NavigationExampleState extends State<NavigationExample> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Bienvenido Dr...'),),
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
-        },
-        indicatorColor: Colors.blue,
-        selectedIndex: currentPageIndex,
-        destinations: const <Widget>[
-          NavigationDestination(
-              selectedIcon: Icon(Icons.home),
-              icon: Badge(
-                label: Text('4'),
-                child: Icon(Icons.home_outlined),
-              ),
-              label: 'Home'),
-          NavigationDestination(
-              //selectedIcon: Icon(Icons.list_alt),
-              icon: Badge(
-                label: Text('2'),
-                child: Icon(Icons.list),
-              ),
-              label: 'Pacientes'),
-          NavigationDestination(
-              selectedIcon: Icon(Icons.person),
-              icon: Icon(Icons.person_outline),
-              label: 'Perfil',
-              ),
+    return Consumer(builder: (context, ref, child){
+      
+      User userInfo = ref.watch(userInfoProvider);
+      
+      return Scaffold(
+        
+          appBar: AppBar(title: Text('Bienvenido Dr ${userInfo.surname}'),),
+          bottomNavigationBar: NavigationBar(
+            onDestinationSelected: (int index) {
+              setState(() {
+                currentPageIndex = index;
+              });
+            },
+            indicatorColor: Colors.blue,
+            selectedIndex: currentPageIndex,
+            destinations: const <Widget>[
+              NavigationDestination(
+                  selectedIcon: Icon(Icons.home),
+                  icon: Badge(
+                    label: Text('4'),
+                    child: Icon(Icons.home_outlined),
+                  ),
+                  label: 'Home'),
+              NavigationDestination(
+                  //selectedIcon: Icon(Icons.list_alt),
+                  icon: Badge(
+                    label: Text('2'),
+                    child: Icon(Icons.list),
+                  ),
+                  label: 'Pacientes'),
+              NavigationDestination(
+                  selectedIcon: Icon(Icons.person),
+                  icon: Icon(Icons.person_outline),
+                  label: 'Perfil',
+                  ),
 
-        ],
-      ),
-      body: <Widget>[
-        //HOME PAGE
-        Column(
-          children: [
-            const Text('Novedades', style: TextStyle(fontSize: 22, color: Colors.blue)),
-            Expanded(
-              child: ListView.builder(
-                itemCount: newsTitle.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    color: const Color.fromARGB(255, 194, 245, 255),
-                    child: ListTile(
-                      title: Text(newsTitle[index],
-                      style: const TextStyle(fontSize: 20)),
-                      subtitle: Text(news[index]),
-                      leading: const Icon(Icons.newspaper),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-
-        //PACIENTES
-        //appBar: AppBar(title: const Text('Bienvenido Dr...')),
-        Column(
-          children: [
-            const Text('Pacientes'),
-            Expanded(
-              child: ListView.builder(
-                itemCount: patients.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    color: const Color.fromARGB(255, 194, 245, 255),
-                    child: ListTile(
-                      title: Text(patients[index]),
-                      subtitle: const Text('ID:'),
-                      onTap: (){context.pushNamed(PatientDataScreen.name); },
-                      leading: const Icon(Icons.person_outline_outlined),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-
-        //PROFILE
-        Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                margin: const EdgeInsets.all(5.0),
-                child: const Icon(
-                  Icons.person, 
-                  size: 180.0, 
-                  color: Colors.blue, 
-                ),
-              ),
-              const Text(
-                'Mi Perfil',
-                style: TextStyle(fontSize: 24),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: settings.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      color: const Color.fromARGB(255, 194, 245, 255),
-                      child: ListTile(
-                        title: Text(settings[index].title,
-                        style: const TextStyle(fontSize: 20)),
-                        leading: settings[index].leading,
-                        trailing: settings[index].trailing,
-                        onTap: () {
-                          context.push(settings[index].route);
-                        },
-                      ),
-                    );
-                  }
-                )
-              )
             ],
           ),
-        )
+          body: <Widget>[
+            //HOME PAGE
+            Column(
+              children: [
+                const Text('Novedades', style: TextStyle(fontSize: 22, color: Colors.blue)),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: newsTitle.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        color: const Color.fromARGB(255, 194, 245, 255),
+                        child: ListTile(
+                          title: Text(newsTitle[index],
+                          style: const TextStyle(fontSize: 20)),
+                          subtitle: Text(news[index]),
+                          leading: const Icon(Icons.newspaper),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
 
-      ][currentPageIndex],
+            //PACIENTES
+
+            Column(
+              children: [
+                const Text('Pacientes'),
+                Expanded(
+                  child: Visibility(
+                    visible: userInfo.assignedPatients?[0]!='No disponible',
+                    child: ListView.builder(
+                      itemCount: userInfo.assignedPatients?.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          color: const Color.fromARGB(255, 194, 245, 255),
+                          child: ListTile(
+                            title: Text(userInfo.assignedPatients?[index] ?? "No hay pacientes asignados."),
+                            //subtitle: const Text('ID:'),
+                            onTap: (){context.pushNamed(PatientDataScreen.name); },
+                            leading: const Icon(Icons.person_outline_outlined),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Visibility(
+                    visible: userInfo.assignedPatients?[0]=='No disponible',
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 50.0, right: 50.0),
+                      child: Text("Usted todavía no tiene pacientes. Agregue uno con el botón '+'.", textAlign: TextAlign.center,),
+                    )
+                  )
+                ),
+                FloatingActionButton(
+                  onPressed: (){
+                    context.push('/newPatient');
+                  },
+                  child: const Text('+'),
+                ),
+
+              ],
+            ),
+
+            //PROFILE
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    margin: const EdgeInsets.all(5.0),
+                    child: const Icon(
+                      Icons.person, 
+                      size: 180.0, 
+                      color: Colors.blue, 
+                    ),
+                  ),
+                  const Text(
+                    'Mi Perfil',
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: settings.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          color: const Color.fromARGB(255, 194, 245, 255),
+                          child: ListTile(
+                            title: Text(settings[index].title,
+                            style: const TextStyle(fontSize: 20)),
+                            leading: settings[index].leading,
+                            trailing: settings[index].trailing,
+                            onTap: () {
+                              context.push(settings[index].route);
+                            },
+                          ),
+                        );
+                      }
+                    )
+                  )
+                ],
+              ),
+            )
+
+          ][currentPageIndex],
+        );
+      }
     );
   }
 }
+    

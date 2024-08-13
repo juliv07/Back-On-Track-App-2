@@ -18,20 +18,6 @@ class ProfileSetting{
     });
   }
 
-List <ProfileSetting> profileSettings = [
-  ProfileSetting(
-    title: 'Nombre', 
-    subtitle: '', 
-    trailing: const Icon(Icons.edit), 
-    route: '/editName'),
-
-  ProfileSetting(
-    title: 'Institución', 
-    subtitle: '', 
-    trailing: const Icon(Icons.edit), 
-    route: '/editInfo'),
-];
-
 class DoctorEditProfileScreen extends ConsumerWidget {
   DoctorEditProfileScreen({super.key});
   static const String name = 'doctorEditProfile';
@@ -41,9 +27,23 @@ class DoctorEditProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
 
-    final userEmail = ref.watch(emailProvider);
+    String nameAndSurname = ('${ref.watch(userInfoProvider).name} ${ref.watch(userInfoProvider).surname}');
 
-    final name = await db.collection('users').where({'email', isEqualTo: userEmail})
+
+    List <ProfileSetting> profileSettings = [
+      ProfileSetting(
+        title: 'Nombre', 
+        subtitle: nameAndSurname, 
+        trailing: const Icon(Icons.edit), 
+        route: '/editName'),
+
+      ProfileSetting (
+        title: 'Institución', 
+        subtitle: ref.watch(userInfoProvider).healthCenter ?? '',
+        trailing: const Icon(Icons.edit), 
+        route: '/editInfo'),
+];
+
 
     return Scaffold(
       appBar: AppBar(title: const Text('Editar perfil')),
@@ -55,7 +55,7 @@ class DoctorEditProfileScreen extends ConsumerWidget {
             children: [
               const CircleAvatar(
                 radius: 120,
-                backgroundImage: NetworkImage('https://nationaleczema.org/wp-content/uploads/2019/01/shutterstock_624008096.jpg')
+                backgroundImage: NetworkImage('https://static.vecteezy.com/system/resources/thumbnails/025/337/669/small_2x/default-male-avatar-profile-icon-social-media-chatting-online-user-free-vector.jpg')
               ),
               Expanded(
                 child: ListView.builder(

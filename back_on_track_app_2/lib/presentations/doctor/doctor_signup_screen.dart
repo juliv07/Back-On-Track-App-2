@@ -1,11 +1,13 @@
+import 'package:back_on_track_app_2/entities/User.dart';
 import 'package:back_on_track_app_2/presentations/doctor/doctor_home_screen.dart';
+import 'package:back_on_track_app_2/providers/userDataProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:back_on_track_app_2/entities/User.dart';
 
 // ignore: must_be_immutable
-class DoctorSignUpScreen extends StatelessWidget {
+class DoctorSignUpScreen extends ConsumerWidget {
   DoctorSignUpScreen({super.key});
   static const String name = 'doctorSignup';
 
@@ -19,7 +21,7 @@ class DoctorSignUpScreen extends StatelessWidget {
   FirebaseFirestore db = FirebaseFirestore.instance;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,ref) {
     return Scaffold(
       //resizeToAvoidBottomInset: false, 
       appBar: AppBar(title: const Text('Registrarse como médico'),),
@@ -169,7 +171,17 @@ class DoctorSignUpScreen extends StatelessWidget {
                       };
                       
                       db.collection('users').add(data).then((documentSnapshot) => print("Added Data with ID: ${documentSnapshot.id}"));
-                      
+                      ref.read(userInfoProvider.notifier).state =
+                        User(
+                          isDoctor: true, 
+                          name: inputName, 
+                          surname: inputSurname, 
+                          email: inputEmail, password: 
+                          inputPswd, phone: inputPhone, 
+                          healthCenter: inputHealthCenter
+                        
+                      );
+
                       context.goNamed(DoctorHomeScreen.name);
                     }
                   }, 
