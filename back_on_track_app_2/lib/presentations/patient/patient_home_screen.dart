@@ -81,7 +81,7 @@ class _NavigationExampleState extends State<NavigationExample> {
       User userInfo = ref.watch(userInfoProvider);
 
       return Scaffold(
-        appBar: AppBar(title: Text('Bienvenido ${userInfo.name}'),),
+        appBar: AppBar(title: Text('Bienvenido, ${userInfo.name}'),),
         bottomNavigationBar: NavigationBar(
           onDestinationSelected: (int index) {
             setState(() {

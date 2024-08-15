@@ -83,7 +83,7 @@ class _NavigationExampleState extends State<NavigationExample> {
       
       return Scaffold(
         
-          appBar: AppBar(title: Text('Bienvenido Dr ${userInfo.surname}'),),
+          appBar: AppBar(title: Text('Bienvenido, Dr. ${userInfo.surname}'),),
           bottomNavigationBar: NavigationBar(
             onDestinationSelected: (int index) {
               setState(() {
