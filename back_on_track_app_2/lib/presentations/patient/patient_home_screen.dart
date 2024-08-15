@@ -1,4 +1,7 @@
+import 'package:back_on_track_app_2/entities/User.dart';
+import 'package:back_on_track_app_2/providers/userDataProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 List newsTitle = [
@@ -48,13 +51,13 @@ List <Setting> settings =[
     )
 ];
 
-class PatientHomeScreen extends StatelessWidget {
+class PatientHomeScreen extends ConsumerWidget{
   static const String name = 'patientHome'; 
   final bool doctor;
   const PatientHomeScreen({super.key, this.doctor = false});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext contextm, ref) {
     return const MaterialApp(
       home: NavigationExample(),
     );
@@ -73,107 +76,113 @@ class _NavigationExampleState extends State<NavigationExample> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Bienvenido...'),),
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
-        },
-        indicatorColor: Colors.blue,
-        selectedIndex: currentPageIndex,
-        destinations: const <Widget>[
-          NavigationDestination(
-              selectedIcon: Icon(Icons.home),
-              icon: Icon(Icons.home_outlined),
-              label: 'Home'
-              ),
-          NavigationDestination(
-              selectedIcon: Icon(Icons.bluetooth_connected),
-              icon: Icon(Icons.bluetooth),
-              label: 'Conexión'
-              ),
-          NavigationDestination(
-              selectedIcon: Icon(Icons.person),
-              icon: Icon(Icons.person_outline),
-              label: 'Perfil',
-              ),
+    return Consumer(builder: (context, ref, child) {
+      
+      User userInfo = ref.watch(userInfoProvider);
 
-        ],
-      ),
-      body: <Widget>[
-        //HOME PAGE
-        Column(
-          children: [
-            const Text('Novedades', style: TextStyle(fontSize: 22, color: Colors.blue)),
-            Expanded(
-              child: ListView.builder(
-                itemCount: newsTitle.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    color: const Color.fromARGB(255, 194, 245, 255),
-                    child: ListTile(
-                      title: Text(newsTitle[index],
-                      style: const TextStyle(fontSize: 20)),
-                      subtitle: Text(news[index]),
-                      leading: const Icon(Icons.newspaper),
-                    ),
-                  );
-                },
-              ),
-            ),
+      return Scaffold(
+        appBar: AppBar(title: Text('Bienvenido ${userInfo.name}'),),
+        bottomNavigationBar: NavigationBar(
+          onDestinationSelected: (int index) {
+            setState(() {
+              currentPageIndex = index;
+            });
+          },
+          indicatorColor: Colors.blue,
+          selectedIndex: currentPageIndex,
+          destinations: const <Widget>[
+            NavigationDestination(
+                selectedIcon: Icon(Icons.home),
+                icon: Icon(Icons.home_outlined),
+                label: 'Home'
+                ),
+            NavigationDestination(
+                selectedIcon: Icon(Icons.bluetooth_connected),
+                icon: Icon(Icons.bluetooth),
+                label: 'Conexión'
+                ),
+            NavigationDestination(
+                selectedIcon: Icon(Icons.person),
+                icon: Icon(Icons.person_outline),
+                label: 'Perfil',
+                ),
+
           ],
         ),
-
-        //BLUETOOTH
-        Center(
-          child: ElevatedButton(onPressed:(){
-            context.push('/btConnection');
-          }, child: const Text('Conectar')),
-        ),
-
-        //PROFILE
-        Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                margin: const EdgeInsets.all(5.0),
-                child: const Icon(
-                  Icons.person, 
-                  size: 180.0, 
-                  color: Colors.blue, 
-                ),
-              ),
-              const Text(
-                'Mi Perfil',
-                style: TextStyle(fontSize: 24),
-              ),
+        body: <Widget>[
+          //HOME PAGE
+          Column(
+            children: [
+              const Text('Novedades', style: TextStyle(fontSize: 22, color: Colors.blue)),
               Expanded(
                 child: ListView.builder(
-                  itemCount: settings.length,
+                  itemCount: newsTitle.length,
                   itemBuilder: (context, index) {
                     return Card(
                       color: const Color.fromARGB(255, 194, 245, 255),
                       child: ListTile(
-                        title: Text(settings[index].title,
+                        title: Text(newsTitle[index],
                         style: const TextStyle(fontSize: 20)),
-                        leading: settings[index].leading,
-                        trailing: settings[index].trailing,
-                        onTap: () {
-                          context.push(settings[index].route);
-                        },
+                        subtitle: Text(news[index]),
+                        leading: const Icon(Icons.newspaper),
                       ),
                     );
-                  }
-                )
-              )
+                  },
+                ),
+              ),
             ],
           ),
-        ),
 
-      ][currentPageIndex],
+          //BLUETOOTH
+          Center(
+            child: ElevatedButton(onPressed:(){
+              context.push('/btConnection');
+            }, child: const Text('Conectar')),
+          ),
+
+          //PROFILE
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  margin: const EdgeInsets.all(5.0),
+                  child: const Icon(
+                    Icons.person, 
+                    size: 180.0, 
+                    color: Colors.blue, 
+                  ),
+                ),
+                const Text(
+                  'Mi Perfil',
+                  style: TextStyle(fontSize: 24),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: settings.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        color: const Color.fromARGB(255, 194, 245, 255),
+                        child: ListTile(
+                          title: Text(settings[index].title,
+                          style: const TextStyle(fontSize: 20)),
+                          leading: settings[index].leading,
+                          trailing: settings[index].trailing,
+                          onTap: () {
+                            context.push(settings[index].route);
+                          },
+                        ),
+                      );
+                    }
+                  )
+                )
+              ],
+            ),
+          ),
+
+        ][currentPageIndex],
+      );
+    },
     );
   }
 }
