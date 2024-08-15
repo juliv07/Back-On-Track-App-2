@@ -52,8 +52,8 @@ class PatientSignUpScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
 
-    final phoneIsNumeric = phoneController.text.runes.every((r) => r >= 48 && r <= 57);
-    final birthYearIsNumeric = birthYearController.text.runes.every((r) => r >= 48 && r <= 57);
+    final isNumeric = RegExp(r'^[0-9]+$');
+    final isNumericAndDot = RegExp(r'^[0-9]*\.?[0-9]+$');
 
     return Scaffold(
       appBar: AppBar(title: const Text('Registrarse como paciente'),),
@@ -79,6 +79,7 @@ class PatientSignUpScreen extends ConsumerWidget {
                       labelText: 'Nombre',
                       hintText: 'Juan',
                     ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Este campo no puede estar vacío';
@@ -97,6 +98,7 @@ class PatientSignUpScreen extends ConsumerWidget {
                       labelText: 'Apellido',
                       hintText: 'Pérez',
                     ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Este campo no puede estar vacío';
@@ -119,10 +121,11 @@ class PatientSignUpScreen extends ConsumerWidget {
                       labelText: 'Número de teléfono',
                       hintText: '1112345678',
                     ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Este campo no puede estar vacío';
-                      } else if (phoneIsNumeric==false){
+                      } else if (isNumeric.hasMatch(value)==false){
                         return 'El número de teléfono no puede contener símbolos o letras';
                       }
                       return null; // Devuelve null si no hay error
@@ -140,10 +143,11 @@ class PatientSignUpScreen extends ConsumerWidget {
                       labelText: 'Año de nacimiento',
                       hintText: '1978',
                     ),
-                     validator: (value) {
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Este campo no puede estar vacío';
-                      } else if (birthYearIsNumeric==false || int.parse(value)>=2024 || int.parse(value)<1900){
+                      } else if (isNumeric.hasMatch(value)==false || int.parse(value)>=2024 || int.parse(value)<1900){
                         return 'Ingrese un año válido';
                       }
                       return null; // Devuelve null si no hay error
@@ -165,7 +169,8 @@ class PatientSignUpScreen extends ConsumerWidget {
                       labelText: 'Correo electrónico',
                       hintText: 'ejemplo@correo.com',
                     ),
-                     validator: (value) {
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Este campo no puede estar vacío';
                       }
@@ -196,7 +201,8 @@ class PatientSignUpScreen extends ConsumerWidget {
                         },
                       ),
                     ),
-                     validator: (value) {
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Este campo no puede estar vacío';
                       } else if (value.length<8){
@@ -221,13 +227,16 @@ class PatientSignUpScreen extends ConsumerWidget {
                       labelText: 'Altura (cm)',
                       hintText: '174',
                     ),
-                     validator: (value) {
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Este campo no puede estar vacío';
                       } else if (value.contains(',')){
                         return "Ingrese los decimales con un punto. Ej: '174.5'";
                       } else if (double.parse(value)>250 || double.parse(value)<60){
                         return 'Ingrese una altura válida';
+                      } else if (isNumericAndDot.hasMatch(value)==false){
+                        return 'La altura no puede contener símbolos o letras';
                       }
                       return null; // Devuelve null si no hay error
                     },
@@ -244,11 +253,16 @@ class PatientSignUpScreen extends ConsumerWidget {
                       labelText: 'Peso (kg)',
                       hintText: '65',
                     ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Este campo no puede estar vacío';
                       } else if (value.contains(',')){
                         return "Ingrese los decimales con un punto. Ej: '65.8'";
+                      } else if (isNumericAndDot.hasMatch(value)==false){
+                        return 'El peso no puede contener símbolos o letras';
+                      } else if (double.parse(value) > 250 || double.parse(value)<10){
+                        return 'Ingrese un peso válido';
                       }
                       return null; // Devuelve null si no hay error
                     },
@@ -263,6 +277,7 @@ class PatientSignUpScreen extends ConsumerWidget {
                     decoration: const InputDecoration(//
                       labelText: 'Historial previo',
                     ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Este campo no puede estar vacío';

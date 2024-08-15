@@ -6,6 +6,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+class DoctorPasswordVisibilityNotifier extends StateNotifier<bool> {
+  DoctorPasswordVisibilityNotifier() : super(true);
+
+  void toggle() {
+    state = !state;
+  }
+}
+
+final doctorPasswordVisibilityProvider = StateNotifierProvider<DoctorPasswordVisibilityNotifier, bool>((ref) {
+  return DoctorPasswordVisibilityNotifier();
+});
+
 // ignore: must_be_immutable
 class DoctorSignUpScreen extends ConsumerWidget {
   DoctorSignUpScreen({super.key});
@@ -18,10 +30,23 @@ class DoctorSignUpScreen extends ConsumerWidget {
   TextEditingController phoneController = TextEditingController();
   TextEditingController healthCenterController = TextEditingController();
 
+  final focusNode1 = FocusNode();
+  final focusNode2 = FocusNode();
+  final focusNode3 = FocusNode();
+  final focusNode4 = FocusNode();
+  final focusNode5 = FocusNode();
+  final focusNode6 = FocusNode();
+  final focusNode7 = FocusNode();
+
+  final _formKey = GlobalKey<FormState>();
+
   FirebaseFirestore db = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context,ref) {
+
+    final isNumeric = RegExp(r'^[0-9]+$');
+
     return Scaffold(
       //resizeToAvoidBottomInset: false, 
       appBar: AppBar(title: const Text('Registrarse como médico'),),
@@ -29,165 +54,187 @@ class DoctorSignUpScreen extends ConsumerWidget {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(12.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Información personal'),
-                TextField( //NAME
-                  controller: nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Nombre',
-                    hintText: 'Juan',
-                  )
-                ),
-                TextField( //SURNAME
-                  controller: surnameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Apellido',
-                    hintText: 'Pérez',
-                  )
-                ),
-                TextField( //PHONE
-                  controller: phoneController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Número de teléfono',
-                    hintText: '1112345678',
-                  )
-                ),
+            child: Form(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Información personal'),
+                  TextFormField( //NAME
+                    focusNode: focusNode1,
+                    textInputAction: TextInputAction.next,
+                    onFieldSubmitted: (_) {
+                      FocusScope.of(context).requestFocus(focusNode2);
+                    },
+                    controller: nameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Nombre',
+                      hintText: 'Juan',
+                    ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Este campo no puede estar vacío';
+                      } 
+                      return null; // Devuelve null si no hay error
+                    },
+                  ),
+                  TextFormField( //SURNAME
+                    focusNode: focusNode2,
+                    textInputAction: TextInputAction.next,
+                    onFieldSubmitted: (_) {
+                      FocusScope.of(context).requestFocus(focusNode3);
+                    },
+                    controller: surnameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Apellido',
+                      hintText: 'Pérez',
+                    ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Este campo no puede estar vacío';
+                      } 
+                      return null; // Devuelve null si no hay error
+                    },
+                  ),
+                  TextFormField( //PHONE
+                    focusNode: focusNode3,
+                    textInputAction: TextInputAction.next,
+                    onFieldSubmitted: (_) {
+                      FocusScope.of(context).requestFocus(focusNode4);
+                    },
+                    controller: phoneController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      labelText: 'Número de teléfono',
+                      hintText: '1112345678',
+                    ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Este campo no puede estar vacío';
+                      } else if (isNumeric.hasMatch(value)==false){
+                        return 'El número de teléfono no puede contener símbolos o letras';
+                      }
+                      return null; // Devuelve null si no hay error
+                    },
+                  ),
 
-                const SizedBox(height: 30.0),
-                const Text('Datos de la cuenta'),
+                  const SizedBox(height: 30.0),
+                  const Text('Datos de la cuenta'),
 
-                TextField(//EMAIL
-                  controller: emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    labelText: 'Correo electrónico',
-                    hintText: 'ejemplo@coreo.com',
-                  )
-                ),
-                TextField(//PASSWORD
-                  controller: pswdController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Contraseña',
-                  )
-                ),
-                
-                const SizedBox(height: 30.0),
-                const Text('¿Dónde trabaja?'),
-
-                TextField(//HEALTH CENTER
-                  controller: healthCenterController,
-                  decoration: const InputDecoration(
-                    labelText: 'Nombre de la institución',
-                  )
-                ),
-
-                const SizedBox(height: 30.0),
-                ElevatedButton(
-                  onPressed: (){
-                    String inputName = nameController.text;
-                    String inputSurname = surnameController.text;
-                    String inputPhone = phoneController.text;
-                    String inputEmail = emailController.text;
-                    String inputPswd = pswdController.text;
-                    String inputHealthCenter = healthCenterController.text;
-
-                    if(inputName.isEmpty || inputSurname.isEmpty || inputPhone.isEmpty ||
-                    inputEmail.isEmpty || inputEmail.isEmpty || inputPswd.isEmpty || 
-                    inputHealthCenter.isEmpty){
-                      SnackBar emptyFields = SnackBar(
-                        content: const Text('Complete todos los campos.',
-                          style: TextStyle(color: Colors.black)),
-                        backgroundColor: const Color.fromARGB(255, 255, 251, 0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                  TextFormField(//EMAIL
+                    focusNode: focusNode4,
+                    textInputAction: TextInputAction.next,
+                    onFieldSubmitted: (_) {
+                      FocusScope.of(context).requestFocus(focusNode5);
+                    },
+                    controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: const InputDecoration(
+                      labelText: 'Correo electrónico',
+                      hintText: 'ejemplo@coreo.com',
+                    ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Este campo no puede estar vacío';
+                      }
+                      else if (value.contains('@')==false || '@'.allMatches(value).length > 1){
+                        return 'Ingrese un correo elecrónico válido';
+                      }
+                      return null; // Devuelve null si no hay error
+                    },
+                  ),
+                  TextFormField(//PASSWORD
+                    focusNode: focusNode5,
+                    textInputAction: TextInputAction.next,
+                    onFieldSubmitted: (_) {
+                      FocusScope.of(context).requestFocus(focusNode6);
+                    },
+                    controller: pswdController,
+                    obscureText: ref.watch(doctorPasswordVisibilityProvider),
+                    decoration: InputDecoration(
+                      labelText: 'Contraseña',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          ref.watch(doctorPasswordVisibilityProvider)
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                         ),
-                        duration: const Duration(seconds: 2),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(emptyFields);
-                      return;
-                    }
-
-                    final phoneIsNumeric = inputPhone.runes.every((r) => r >= 48 && r <= 57);
-                      if(phoneIsNumeric == false){
-                        SnackBar phoneNotNumeric = SnackBar(
-                        content: const Text('Número de teléfono no válido.',
-                            style: TextStyle(color: Colors.black)),
-                        backgroundColor: const Color.fromARGB(255, 255, 251, 0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        duration: const Duration(seconds: 2),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(phoneNotNumeric);
-                      return;
-                    }
-
-                    int atCount = '@'.allMatches(inputEmail).length;
-                    if(atCount==0 || atCount > 1){
-                      SnackBar wrongEmail = SnackBar(
-                      content: const Text('Correo electrónico no válido.',
-                          style: TextStyle(color: Colors.black)),
-                      backgroundColor: const Color.fromARGB(255, 255, 251, 0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        onPressed: () {
+                          ref.read(doctorPasswordVisibilityProvider.notifier).toggle();
+                        },
                       ),
-                      duration: const Duration(seconds: 2),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(wrongEmail);
-                    return;
-                    }
+                    ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Este campo no puede estar vacío';
+                      } else if (value.length<8){
+                        return 'La contraseña debe contener más de 8 caracteres';
+                      }
+                      return null; // Devuelve null si no hay error
+                    },
+                  ),
+                  
+                  const SizedBox(height: 30.0),
+                  const Text('¿Dónde trabaja?'),
 
-                    if(inputPswd.length<8){
-                      SnackBar pswdTooShort = SnackBar(
-                      content: const Text('La contraseña debe contener al menos 8 dígitos.',
-                          style: TextStyle(color: Colors.black)),
-                      backgroundColor: const Color.fromARGB(255, 255, 251, 0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      duration: const Duration(seconds: 2),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(pswdTooShort);
-                    return;
-                    }
+                  TextFormField(//HEALTH CENTER
+                    focusNode: focusNode6,
+                    textInputAction: TextInputAction.next,
+                    onFieldSubmitted: (_) {
+                      FocusScope.of(context).requestFocus(focusNode7);
+                    },
+                    controller: healthCenterController,
+                    decoration: const InputDecoration(
+                      labelText: 'Nombre de la institución',
+                    ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Este campo no puede estar vacío';
+                      } 
+                      return null; // Devuelve null si no hay error
+                    },
+                  ),
+
+                  const SizedBox(height: 30.0),
+                  ElevatedButton(
+                    focusNode: focusNode7,
+                    onPressed: (){
                     
-                    if(inputName.isEmpty == false && inputSurname.isEmpty == false && 
-                    inputPhone.isEmpty == false && inputEmail.isEmpty == false && 
-                    inputPswd.isEmpty == false && inputHealthCenter.isEmpty == false && 
-                    phoneIsNumeric && atCount==1 && inputPswd.length>=8){
-                      
-                      final data = {
-                        'isDoctor':true,
-                        'name':inputName,
-                        'surname':inputSurname,
-                        'phone':inputPhone,
-                        'email':inputEmail,
-                        'password':inputPswd,
-                        'healthCenter':inputHealthCenter,
-                      };
-                      
-                      db.collection('users').add(data).then((documentSnapshot) => print("Added Data with ID: ${documentSnapshot.id}"));
-                      ref.read(userInfoProvider.notifier).state =
-                        User(
-                          isDoctor: true, 
-                          name: inputName, 
-                          surname: inputSurname, 
-                          email: inputEmail, password: 
-                          inputPswd, phone: inputPhone, 
-                          healthCenter: inputHealthCenter
+                     if (_formKey.currentState?.validate() ?? false) {
                         
-                      );
-
-                      context.goNamed(DoctorHomeScreen.name);
-                    }
-                  }, 
-                  child: const Text('Registrarse'),
-                )
-              ],
+                        final data = {
+                          'isDoctor':true,
+                          'name':nameController.text,
+                          'surname':surnameController.text,
+                          'phone':phoneController.text,
+                          'email':emailController.text,
+                          'password':pswdController.text,
+                          'healthCenter':healthCenterController.text,
+                        };
+                        
+                        db.collection('users').add(data).then((documentSnapshot) => print("Added Data with ID: ${documentSnapshot.id}"));
+                        ref.read(userInfoProvider.notifier).state =
+                          User(
+                          isDoctor:true,
+                          name:nameController.text,
+                          surname:surnameController.text,
+                          phone:phoneController.text,
+                          email:emailController.text,
+                          password:pswdController.text,
+                          healthCenter:healthCenterController.text,       
+                        );
+                        context.goNamed(DoctorHomeScreen.name);
+                      }
+                    }, 
+                    child: const Text('Registrarse'),
+                  )
+                ],
+              ),
             ),
           ),
         ),
