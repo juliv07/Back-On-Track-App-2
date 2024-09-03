@@ -1,5 +1,7 @@
 //import 'package:back_on_track_app_2/firebase_auth/login_widget_tree.dart';
 import 'package:back_on_track_app_2/presentations/doctor/doctor_account_settings_screen.dart';
+import 'package:back_on_track_app_2/presentations/doctor/doctor_add_patient_screen.dart';
+import 'package:back_on_track_app_2/presentations/doctor/doctor_search_patient_screen.dart';
 import 'package:back_on_track_app_2/presentations/doctor/doctor_edit_profile_screen.dart';
 import 'package:back_on_track_app_2/presentations/doctor/doctor_home_screen.dart';
 import 'package:back_on_track_app_2/presentations/doctor/doctor_signup_screen.dart';
@@ -21,7 +23,7 @@ import 'package:back_on_track_app_2/presentations/patient/patient_view_doctor_sc
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
-  initialLocation: "/initialScreen",
+  initialLocation: "/doctorSearchPatient",
 
   routes: [
   GoRoute(
@@ -136,6 +138,18 @@ final appRouter = GoRouter(
       name: BtConnectionScreen.name,
       path: '/btConnection',
       builder: (context, state) =>  BtConnectionScreen()
+    ),
+
+   GoRoute(
+      name: DoctorSearchPatientScreen.name,
+      path: '/doctorSearchPatient',
+      builder: (context, state) =>  DoctorSearchPatientScreen()
+    ),
+
+    GoRoute(
+      name: DoctorAddPatientScreen.name,
+      path: '/doctorAddPatient',
+      builder: (context, state) =>  DoctorAddPatientScreen(searchSurname: state.extra as String)
     ),
 
    /*GoRoute(

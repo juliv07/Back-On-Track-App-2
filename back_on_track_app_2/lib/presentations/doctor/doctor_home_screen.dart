@@ -1,5 +1,6 @@
 
 import 'package:back_on_track_app_2/entities/User.dart';
+import 'package:back_on_track_app_2/presentations/doctor/doctor_search_patient_screen.dart';
 import 'package:back_on_track_app_2/presentations/patient/patient_data_screen.dart';
 import 'package:back_on_track_app_2/providers/userDataProvider.dart';
 import 'package:flutter/material.dart';
@@ -148,12 +149,12 @@ class _NavigationExampleState extends State<NavigationExample> {
                   child: Visibility(
                     visible: userInfo.assignedPatients?[0]!='No disponible',
                     child: ListView.builder(
-                      itemCount: userInfo.assignedPatients?.length,
+                      itemCount: 1,
                       itemBuilder: (context, index) {
                         return Card(
                           color: const Color.fromARGB(255, 194, 245, 255),
                           child: ListTile(
-                            title: Text(userInfo.assignedPatients?[index] ?? "No hay pacientes asignados."),
+                            title: Text(userInfo.assignedPatients?[index] ?? 'No hay pacientes asignados.'),
                             //subtitle: const Text('ID:'),
                             onTap: (){context.pushNamed(PatientDataScreen.name); },
                             leading: const Icon(Icons.person_outline_outlined),
@@ -174,7 +175,9 @@ class _NavigationExampleState extends State<NavigationExample> {
                 ),
                 FloatingActionButton(
                   onPressed: (){
-                    context.push('/newPatient');
+                    print('yendoooo');
+                    context.pushNamed(DoctorSearchPatientScreen.name);
+                    
                   },
                   child: const Text('+'),
                 ),

@@ -31,6 +31,7 @@ class LogoutScreen extends ConsumerWidget {
               const Text('¿Estás seguro que querés cerrar sesión?'),
               ElevatedButton(onPressed: (){
                 ref.read(userInfoProvider.notifier).state = User(
+                  userId: '',
                   isDoctor: false, 
                   name: '', 
                   surname: '', 

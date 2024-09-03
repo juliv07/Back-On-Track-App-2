@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class User {
+  String userId;
   String name;
   String surname;
   String email;
@@ -19,6 +22,7 @@ class User {
   String? healthCenter;
 
   User({
+    required this.userId,
     required this.isDoctor,
     required this.name,
     required this.surname,
@@ -33,4 +37,33 @@ class User {
     this.assignedPatients,
     this.healthCenter,
   });
+
+  factory User.fromFirestore(
+      DocumentSnapshot<Map<String, dynamic>> snapshot,
+      SnapshotOptions? options,
+    ){
+      final data = snapshot.data();
+      return User(
+        userId: data?['userId'], 
+        isDoctor: data?['isDoctor'], 
+        name: data?['name'], 
+        surname: data?['surname'], 
+        email: data?['email'], 
+        password: data?['password'], 
+        phone: data?['phone']
+      );
+    }
+  
+    Map<String, dynamic> toFirestore(){
+      return{
+        "userId": userId,
+        "isDoctor": isDoctor,
+        "name": name,
+        "surname": surname,
+        "email": email,
+        "password": password,
+        "phone": phone,
+      
+      };
+    }
 }

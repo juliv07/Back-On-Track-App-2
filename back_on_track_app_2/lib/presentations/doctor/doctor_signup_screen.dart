@@ -55,6 +55,7 @@ class DoctorSignUpScreen extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Form(
+              key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -204,10 +205,13 @@ class DoctorSignUpScreen extends ConsumerWidget {
                   ElevatedButton(
                     focusNode: focusNode7,
                     onPressed: (){
-                    
-                     if (_formKey.currentState?.validate() ?? false) {
                         
+                      if (_formKey.currentState?.validate() ?? false) {
+                                                
+                        final newUserRef = db.collection("users").doc();
+
                         final data = {
+                          'userId': newUserRef.id,
                           'isDoctor':true,
                           'name':nameController.text,
                           'surname':surnameController.text,
@@ -217,9 +221,11 @@ class DoctorSignUpScreen extends ConsumerWidget {
                           'healthCenter':healthCenterController.text,
                         };
                         
-                        db.collection('users').add(data).then((documentSnapshot) => print("Added Data with ID: ${documentSnapshot.id}"));
+                        newUserRef.set(data).then((documentSnapshot) => print("Added Data with ID: ${newUserRef.id}"));
+                          
                         ref.read(userInfoProvider.notifier).state =
-                          User(
+                        User(
+                          userId: newUserRef.id,
                           isDoctor:true,
                           name:nameController.text,
                           surname:surnameController.text,
@@ -232,7 +238,7 @@ class DoctorSignUpScreen extends ConsumerWidget {
                       }
                     }, 
                     child: const Text('Registrarse'),
-                  )
+                  ),
                 ],
               ),
             ),

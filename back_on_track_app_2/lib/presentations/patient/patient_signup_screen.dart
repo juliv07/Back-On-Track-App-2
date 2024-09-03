@@ -290,8 +290,13 @@ class PatientSignUpScreen extends ConsumerWidget {
                   ElevatedButton(
                     focusNode: focusNode10,
                     onPressed: (){
+                      
                       if (_formKey.currentState?.validate() ?? false) {
+
+                        final newUserRef = db.collection("users").doc();
+
                         final data = {
+                          'userId': newUserRef.id,
                           'isDoctor':false,
                           'name':nameController.text,
                           'surname':surnameController.text,
@@ -304,9 +309,10 @@ class PatientSignUpScreen extends ConsumerWidget {
                           'previousInfo':previousInfoController.text,                        
                         };
                         
-                        db.collection('users').add(data).then((documentSnapshot) => print("Added Data with ID: ${documentSnapshot.id}"));
+                        newUserRef.set(data).then((documentSnapshot) => print("Added Data with ID: ${newUserRef.id}"));
                         
                         ref.read(userInfoProvider.notifier).state = User(
+                          userId: newUserRef.id,
                           isDoctor:false,
                           name:nameController.text,
                           surname:surnameController.text,

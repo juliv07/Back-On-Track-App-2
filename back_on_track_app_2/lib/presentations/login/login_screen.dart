@@ -148,6 +148,7 @@ class LoginScreen extends ConsumerWidget {
                           DocumentSnapshot doc = firebaseData.docs.first;
                           var data = doc.data() as Map<String, dynamic>;
                           
+                          String userIdFromDB = data['userId'];
                           bool isDoctorFromDB = data['isDoctor'];
                           String nameFromDB = data['name'] ?? 'No disponible';
                           String surnameFromDB = data['surname'] ?? 'No disponible';
@@ -171,6 +172,7 @@ class LoginScreen extends ConsumerWidget {
                           if(isDoctorFromDB){
                             ref.read(userInfoProvider.notifier).state =
                               User(
+                                userId: userIdFromDB,
                                 isDoctor: isDoctorFromDB, 
                                 name: nameFromDB, 
                                 surname: surnameFromDB, 
@@ -185,6 +187,7 @@ class LoginScreen extends ConsumerWidget {
                           else{
                             ref.read(userInfoProvider.notifier).state =
                               User(
+                                userId: userIdFromDB,
                                 isDoctor: isDoctorFromDB, 
                                 name: nameFromDB, 
                                 surname: surnameFromDB, 
