@@ -1,7 +1,7 @@
 import 'package:back_on_track_app_2/entities/User.dart';
 import 'package:back_on_track_app_2/presentations/doctor/doctor_home_screen.dart';
 import 'package:back_on_track_app_2/presentations/patient/patient_home_screen.dart';
-import 'package:back_on_track_app_2/providers/userDataProvider.dart';
+import 'package:back_on_track_app_2/providers/user_data_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

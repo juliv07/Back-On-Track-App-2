@@ -1,5 +1,5 @@
 import 'package:back_on_track_app_2/entities/User.dart';
-import 'package:back_on_track_app_2/providers/userDataProvider.dart';
+import 'package:back_on_track_app_2/providers/user_data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';

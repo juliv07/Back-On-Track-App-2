@@ -59,7 +59,7 @@ class DoctorViewPatientsScreen extends StatelessWidget {
                 ),
               ),
               FloatingActionButton(onPressed: (){
-                context.push('doctorFindNewPatients');
+                context.push('doctorSearchPatient');
               },
               child: const Icon(Icons.add),
               )

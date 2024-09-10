@@ -143,13 +143,13 @@ final appRouter = GoRouter(
    GoRoute(
       name: DoctorSearchPatientScreen.name,
       path: '/doctorSearchPatient',
-      builder: (context, state) =>  DoctorSearchPatientScreen()
+      builder: (context, state) => DoctorSearchPatientScreen()
     ),
 
     GoRoute(
       name: DoctorAddPatientScreen.name,
       path: '/doctorAddPatient',
-      builder: (context, state) =>  DoctorAddPatientScreen(searchSurname: state.extra as String)
+      builder: (context, state) => DoctorAddPatientScreen(searchSurname: state.extra as String)
     ),
 
    /*GoRoute(

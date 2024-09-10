@@ -1,4 +1,5 @@
 import 'package:back_on_track_app_2/entities/User.dart';
+import 'package:back_on_track_app_2/providers/patients_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,18 +12,15 @@ class DoctorAddPatientScreen extends ConsumerWidget {
 
   FirebaseFirestore db = FirebaseFirestore.instance;
 
-  List<String> foundPatients = [];
-
   @override
   Widget build(BuildContext context, ref) {
 
-    final patientsRef = db.collection("users").withConverter(fromFirestore: User.fromFirestore, toFirestore: (User user, _) => user.toFirestore());
+    /*final patientsRef = db.collection("users").withConverter(fromFirestore: User.fromFirestore, toFirestore: (User user, _) => user.toFirestore());
+    //final docSnap = patientsRef.where("isDoctor",isEqualTo: false).where("surname",isEqualTo: searchSurname).get();
+    print('DOCSNAAAAAPPPP:$docSnap');*/  
 
-    final docSnap = patientsRef.where("isDoctor",isEqualTo: false).where("surname",isEqualTo: searchSurname).get();
-  
-    print('DOCSNAAAAAPPPP:$docSnap');
-
-    
+    List<User>foundPatients = ref.watch(patientsProvider);
+    bool mostrar = false;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Agregar un paciente')),
@@ -31,11 +29,33 @@ class DoctorAddPatientScreen extends ConsumerWidget {
           padding: const EdgeInsets.all(8),
           child: Column(
             children: [
-              Text('Pacientes encontrados con el apellido $searchSurname:'),
+              ElevatedButton(
+                onPressed: () async {
+                  mostrar = true;
+                  await ref.read(patientsProvider.notifier).getPatientsBySurname(searchSurname);
+                  
+                }, 
+                child: const Text('Mostrar pacientes encontrados')),
 
-              /*ListView.builder(
-                itemCount: ,
-              )*/
+              Visibility(
+                visible: mostrar,
+                child: Text('Pacientes encontrados con el apellido $searchSurname:'),
+              ),
+
+              Visibility( //Fijarse que pasa si esto va adentro del onPressed del botón
+                visible: mostrar,
+                child: ListView.builder(
+                  itemCount: foundPatients.length,
+                  itemBuilder: (context, index){
+                    return ListTile(
+                      title: Text(foundPatients[index].name),
+                      subtitle: Text(foundPatients[index].surname),
+                      leading: const Icon(Icons.person),
+                      trailing: const Icon(Icons.add),
+                    );
+                  },
+                )
+              ),
             ],
           ),
         ),
