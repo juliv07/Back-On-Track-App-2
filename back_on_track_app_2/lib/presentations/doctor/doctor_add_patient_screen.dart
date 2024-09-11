@@ -59,7 +59,7 @@ class _DoctorAddPatientScreenState extends ConsumerState<DoctorAddPatientScreen>
                 itemBuilder: (context, index){
                   return ListTile(
                     title: Text(foundPatients[index].name),
-                    subtitle: Text(foundPatients[index].surname),
+                    subtitle: Text('${foundPatients[index].surname} - ${foundPatients[index].email}'),
                     leading: const Icon(Icons.person),
                     trailing: IconButton(
                       icon: const Icon(Icons.add),

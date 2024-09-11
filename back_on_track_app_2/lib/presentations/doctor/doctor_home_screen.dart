@@ -149,14 +149,14 @@ class _NavigationExampleState extends State<NavigationExample> {
                   child: Visibility(
                     visible: userInfo.assignedPatients?[0]!='No disponible',
                     child: ListView.builder(
-                      itemCount: 1,
+                      itemCount: userInfo.assignedPatients?.length,
                       itemBuilder: (context, index) {
                         return Card(
                           color: const Color.fromARGB(255, 194, 245, 255),
                           child: ListTile(
                             title: Text(userInfo.assignedPatients?[index] ?? 'No hay pacientes asignados.'),
                             //subtitle: const Text('ID:'),
-                            onTap: (){context.pushNamed(PatientDataScreen.name); },
+                            onTap: (){context.pushNamed(PatientDataScreen.name);},
                             leading: const Icon(Icons.person_outline_outlined),
                           ),
                         );
