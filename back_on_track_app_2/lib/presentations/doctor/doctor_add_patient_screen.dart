@@ -2,7 +2,6 @@ import 'package:back_on_track_app_2/entities/User.dart';
 import 'package:back_on_track_app_2/providers/patients_provider.dart';
 import 'package:back_on_track_app_2/providers/user_data_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -95,6 +94,8 @@ class _DoctorAddPatientScreenState extends ConsumerState<DoctorAddPatientScreen>
       setState(() {
         currentDoctor = currentDoctor; 
       });
+
+      ref.read(userInfoProvider.notifier).state.assignedPatients = currentDoctor.assignedPatients;  
       
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('${patient.name} ha sido asignado al doctor ${currentDoctor.name}.')),
