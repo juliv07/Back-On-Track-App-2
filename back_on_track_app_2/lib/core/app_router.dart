@@ -23,7 +23,7 @@ import 'package:back_on_track_app_2/presentations/patient/patient_view_doctor_sc
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
-  initialLocation: "/doctorSearchPatient",
+  initialLocation: "/initialScreen",
 
   routes: [
   GoRoute(
@@ -149,7 +149,7 @@ final appRouter = GoRouter(
     GoRoute(
       name: DoctorAddPatientScreen.name,
       path: '/doctorAddPatient',
-      builder: (context, state) => DoctorAddPatientScreen(searchSurname: state.extra as String)
+      builder: (context, state) => DoctorAddPatientScreen()
     ),
 
    /*GoRoute(

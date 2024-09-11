@@ -1,4 +1,5 @@
 import 'package:back_on_track_app_2/presentations/doctor/doctor_add_patient_screen.dart';
+import 'package:back_on_track_app_2/providers/patients_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -45,7 +46,8 @@ class DoctorSearchPatientScreen extends ConsumerWidget {
                     onPressed: (){
                       if (_formKey.currentState?.validate() ?? false) {
                         final String searchSurname = patientNameController.text;
-                        context.pushNamed(DoctorAddPatientScreen.name, extra: searchSurname);
+                        ref.read(surnameProvider.notifier).state = searchSurname;
+                        context.pushNamed(DoctorAddPatientScreen.name);
                         }
                       },
                       child: const Icon(Icons.search),

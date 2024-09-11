@@ -44,13 +44,13 @@ class User {
     ){
       final data = snapshot.data();
       return User(
-        userId: data?['userId'], 
-        isDoctor: data?['isDoctor'], 
-        name: data?['name'], 
-        surname: data?['surname'], 
-        email: data?['email'], 
-        password: data?['password'], 
-        phone: data?['phone']
+        userId: data?['userId'] ?? '',  // Agregamos un valor por defecto si es null
+        isDoctor: data?['isDoctor'] ?? false,  // Valor por defecto booleano si es null
+        name: data?['name'] ?? '',
+        surname: data?['surname'] ?? '',
+        email: data?['email'] ?? '',
+        password: data?['password'] ?? '',
+        phone: data?['phone'] ?? '',
       );
     }
   
