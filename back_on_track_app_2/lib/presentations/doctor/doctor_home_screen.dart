@@ -2,7 +2,9 @@
 import 'package:back_on_track_app_2/entities/User.dart';
 import 'package:back_on_track_app_2/presentations/doctor/doctor_search_patient_screen.dart';
 import 'package:back_on_track_app_2/presentations/patient/patient_data_screen.dart';
+import 'package:back_on_track_app_2/providers/patients_provider.dart';
 import 'package:back_on_track_app_2/providers/user_data_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -81,7 +83,11 @@ class _NavigationExampleState extends State<NavigationExample> {
     return Consumer(builder: (context, ref, child){
       
       User userInfo = ref.watch(userInfoProvider);
-      
+
+      List<String>? assignedPatients = userInfo.assignedPatients;
+
+      List<User> patientsData = ref.read(patientsProvider.notifier).getAssignedPatientsData(assignedPatients);
+            
       return Scaffold(
         
           appBar: AppBar(title: Text('Bienvenido, Dr. ${userInfo.surname}'),),
@@ -154,7 +160,7 @@ class _NavigationExampleState extends State<NavigationExample> {
                         return Card(
                           color: const Color.fromARGB(255, 194, 245, 255),
                           child: ListTile(
-                            title: Text(userInfo.assignedPatients?[index] ?? 'No hay pacientes asignados.'),
+                            title: Text(userInfo.patientsData ?? 'No hay pacientes asignados.'),
                             //subtitle: const Text('ID:'),
                             onTap: (){context.pushNamed(PatientDataScreen.name);},
                             leading: const Icon(Icons.person_outline_outlined),
@@ -231,4 +237,3 @@ class _NavigationExampleState extends State<NavigationExample> {
     );
   }
 }
-    
