@@ -25,34 +25,24 @@ class PatientsNotifier extends StateNotifier<List<User>>{
     state = users.docs.map((d) => d.data()).toList();
   }
 
-  Future<List<User>> getAssignedPatientsData(List<String>? assignedPatientIds) async {
-  List<User> patientNames = [];
-
-  // Iterate through the list of assigned patient IDs
-  for (String patientId in assignedPatientIds!) {
-    // Get a reference to the patient document
-    DocumentSnapshot patientDoc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(patientId)
-        .get();
-
-    // Check if the document exists
-    if (patientDoc.exists) {
-      // Get the patient's name from the document
-      String patientName = patientDoc.get('name');
-      String patientSurname = patientDoc.get('surname');
-      String patientEmail = patientDoc.get('email');
-      patientNames.add(User(userId: patientId, isDoctor: false, name: patientName, surname: patientSurname, email: patientEmail, password: 'pswd', phone: 'phone'));
-    } else {
-      // Handle the case where the patient document doesn't exist
-      print('Patient document not found for ID: $patientId');
-    }
+  Future<void> getAssignedPatientsData(List<String>? assignedPatientIds) async {
+    List<User> auxPatients = [];
+  
+    assignedPatientIds?.forEach((element) async {
+      final docs = db.collection('users')
+        .doc(element)
+        .withConverter(
+        fromFirestore: User.fromFirestore, 
+        toFirestore: (User user,_) => user.toFirestore()
+        );
+      final auxPatient = await docs.get();
+      auxPatients.add(auxPatient.data()!);
+    });
+    
+    state = auxPatients.toList(); 
+    
   }
-
-  return patientNames;
 }
     
 
-
-}
 

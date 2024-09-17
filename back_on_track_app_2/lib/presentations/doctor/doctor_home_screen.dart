@@ -54,186 +54,182 @@ List <Setting> settings = [
 ];
 
 // ignore: must_be_immutable
-class DoctorHomeScreen extends ConsumerWidget {
+class DoctorHomeScreen extends ConsumerStatefulWidget {
 
   static const String name = 'doctorHome';
   final bool doctor;
   const DoctorHomeScreen({super.key, this.doctor = true});
 
   @override
-  Widget build(BuildContext context, ref) {
-    return const MaterialApp(
-      home: NavigationExample(),
-    );
-  }
+  ConsumerState<DoctorHomeScreen> createState() => DoctorHomeScreenState();
 }
 
-class NavigationExample extends StatefulWidget {
-  const NavigationExample({super.key});
-
-  @override
-  State<NavigationExample> createState() => _NavigationExampleState();
-}
-
-class _NavigationExampleState extends State<NavigationExample> {
+class DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
   int currentPageIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    currentPageIndex = 0;
+    
+    User userInfo = ref.watch(userInfoProvider);
+    List<String>? assignedPatients = userInfo.assignedPatients;
+    ref.read(patientsProvider.notifier).getAssignedPatientsData(assignedPatients);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Consumer(builder: (context, ref, child){
-      
-      User userInfo = ref.watch(userInfoProvider);
+    User userInfo = ref.watch(userInfoProvider);
 
-      List<String>? assignedPatients = userInfo.assignedPatients;
+    List<String>? assignedPatients = userInfo.assignedPatients;
 
-      List<User> patientsData = ref.read(patientsProvider.notifier).getAssignedPatientsData(assignedPatients);
-            
-      return Scaffold(
-        
-          appBar: AppBar(title: Text('Bienvenido, Dr. ${userInfo.surname}'),),
-          bottomNavigationBar: NavigationBar(
-            onDestinationSelected: (int index) {
-              setState(() {
-                currentPageIndex = index;
-              });
-            },
-            indicatorColor: Colors.blue,
-            selectedIndex: currentPageIndex,
-            destinations: const <Widget>[
-              NavigationDestination(
-                  selectedIcon: Icon(Icons.home),
-                  icon: Badge(
-                    label: Text('4'),
-                    child: Icon(Icons.home_outlined),
-                  ),
-                  label: 'Home'),
-              NavigationDestination(
-                  //selectedIcon: Icon(Icons.list_alt),
-                  icon: Badge(
-                    label: Text('2'),
-                    child: Icon(Icons.list),
-                  ),
-                  label: 'Pacientes'),
-              NavigationDestination(
-                  selectedIcon: Icon(Icons.person),
-                  icon: Icon(Icons.person_outline),
-                  label: 'Perfil',
-                  ),
+    final patientsInfo = ref.watch(patientsProvider);
 
+    ref.read(patientsProvider.notifier).getAssignedPatientsData(assignedPatients);
+    
+    return Scaffold(
+      appBar: AppBar(title: Text('Bienvenido, Dr. ${userInfo.surname}'),),
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPageIndex = index;
+          });
+        },
+        indicatorColor: Colors.blue,
+        selectedIndex: currentPageIndex,
+        destinations: const <Widget>[
+          NavigationDestination(
+              selectedIcon: Icon(Icons.home),
+              icon: Badge(
+                label: Text('4'),
+                child: Icon(Icons.home_outlined),
+              ),
+              label: 'Home'),
+          NavigationDestination(
+              //selectedIcon: Icon(Icons.list_alt),
+              icon: Badge(
+                label: Text('2'),
+                child: Icon(Icons.list),
+              ),
+              label: 'Pacientes'),
+          NavigationDestination(
+              selectedIcon: Icon(Icons.person),
+              icon: Icon(Icons.person_outline),
+              label: 'Perfil',
+              ),
+
+        ],
+      ),
+      body: <Widget>[
+        //HOME PAGE
+        Column(
+          children: [
+            const Text('Novedades', style: TextStyle(fontSize: 22, color: Colors.blue)),
+            Expanded(
+              child: ListView.builder(
+                itemCount: newsTitle.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    color: const Color.fromARGB(255, 194, 245, 255),
+                    child: ListTile(
+                      title: Text(newsTitle[index],
+                      style: const TextStyle(fontSize: 20)),
+                      subtitle: Text(news[index]),
+                      leading: const Icon(Icons.newspaper),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+
+        //PACIENTES
+
+        Column(
+          children: [
+            const Text('Pacientes'),
+            Expanded(
+              child: Visibility(
+                visible: userInfo.assignedPatients?[0]!='No disponible',
+                child: ListView.builder(
+                  itemCount: userInfo.assignedPatients?.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      color: const Color.fromARGB(255, 194, 245, 255),
+                      child: ListTile(
+                        title: Text(patientsInfo.toString()),
+                        //subtitle: const Text('ID:'),
+                        onTap: (){context.pushNamed(PatientDataScreen.name);},
+                        leading: const Icon(Icons.person_outline_outlined),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            Expanded(
+              child: Visibility(
+                visible: userInfo.assignedPatients?[0]=='No disponible',
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 50.0, right: 50.0),
+                  child: Text("Usted todavía no tiene pacientes. Agregue uno con el botón '+'.", textAlign: TextAlign.center,),
+                )
+              )
+            ),
+            FloatingActionButton(
+              onPressed: (){
+                print('yendoooo');
+                context.pushNamed(DoctorSearchPatientScreen.name);
+                
+              },
+              child: const Text('+'),
+            ),
+
+          ],
+        ),
+
+        //PROFILE
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                margin: const EdgeInsets.all(5.0),
+                child: const Icon(
+                  Icons.person, 
+                  size: 180.0, 
+                  color: Colors.blue, 
+                ),
+              ),
+              const Text(
+                'Mi Perfil',
+                style: TextStyle(fontSize: 24),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: settings.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      color: const Color.fromARGB(255, 194, 245, 255),
+                      child: ListTile(
+                        title: Text(settings[index].title,
+                        style: const TextStyle(fontSize: 20)),
+                        leading: settings[index].leading,
+                        trailing: settings[index].trailing,
+                        onTap: () {
+                          context.push(settings[index].route);
+                        },
+                      ),
+                    );
+                  }
+                )
+              )
             ],
           ),
-          body: <Widget>[
-            //HOME PAGE
-            Column(
-              children: [
-                const Text('Novedades', style: TextStyle(fontSize: 22, color: Colors.blue)),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: newsTitle.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        color: const Color.fromARGB(255, 194, 245, 255),
-                        child: ListTile(
-                          title: Text(newsTitle[index],
-                          style: const TextStyle(fontSize: 20)),
-                          subtitle: Text(news[index]),
-                          leading: const Icon(Icons.newspaper),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
+        )
 
-            //PACIENTES
-
-            Column(
-              children: [
-                const Text('Pacientes'),
-                Expanded(
-                  child: Visibility(
-                    visible: userInfo.assignedPatients?[0]!='No disponible',
-                    child: ListView.builder(
-                      itemCount: userInfo.assignedPatients?.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          color: const Color.fromARGB(255, 194, 245, 255),
-                          child: ListTile(
-                            title: Text(userInfo.patientsData ?? 'No hay pacientes asignados.'),
-                            //subtitle: const Text('ID:'),
-                            onTap: (){context.pushNamed(PatientDataScreen.name);},
-                            leading: const Icon(Icons.person_outline_outlined),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Visibility(
-                    visible: userInfo.assignedPatients?[0]=='No disponible',
-                    child: const Padding(
-                      padding: EdgeInsets.only(left: 50.0, right: 50.0),
-                      child: Text("Usted todavía no tiene pacientes. Agregue uno con el botón '+'.", textAlign: TextAlign.center,),
-                    )
-                  )
-                ),
-                FloatingActionButton(
-                  onPressed: (){
-                    print('yendoooo');
-                    context.pushNamed(DoctorSearchPatientScreen.name);
-                    
-                  },
-                  child: const Text('+'),
-                ),
-
-              ],
-            ),
-
-            //PROFILE
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.all(5.0),
-                    child: const Icon(
-                      Icons.person, 
-                      size: 180.0, 
-                      color: Colors.blue, 
-                    ),
-                  ),
-                  const Text(
-                    'Mi Perfil',
-                    style: TextStyle(fontSize: 24),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: settings.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          color: const Color.fromARGB(255, 194, 245, 255),
-                          child: ListTile(
-                            title: Text(settings[index].title,
-                            style: const TextStyle(fontSize: 20)),
-                            leading: settings[index].leading,
-                            trailing: settings[index].trailing,
-                            onTap: () {
-                              context.push(settings[index].route);
-                            },
-                          ),
-                        );
-                      }
-                    )
-                  )
-                ],
-              ),
-            )
-
-          ][currentPageIndex],
-        );
-      }
+      ][currentPageIndex],
     );
-  }
+  } 
 }
