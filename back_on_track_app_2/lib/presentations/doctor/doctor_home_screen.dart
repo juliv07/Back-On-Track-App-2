@@ -71,10 +71,6 @@ class DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
   void initState() {
     super.initState();
     currentPageIndex = 0;
-    
-    User userInfo = ref.watch(userInfoProvider);
-    List<String>? assignedPatients = userInfo.assignedPatients;
-    ref.read(patientsProvider.notifier).getAssignedPatientsData(assignedPatients);
   }
 
   @override
@@ -83,9 +79,9 @@ class DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
 
     List<String>? assignedPatients = userInfo.assignedPatients;
 
-    final patientsInfo = ref.watch(patientsProvider);
+    List patientsInfo;
 
-    ref.read(patientsProvider.notifier).getAssignedPatientsData(assignedPatients);
+    bool showPatients;
     
     return Scaffold(
       appBar: AppBar(title: Text('Bienvenido, Dr. ${userInfo.surname}'),),
@@ -149,7 +145,16 @@ class DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
         Column(
           children: [
             const Text('Pacientes'),
-            Expanded(
+
+            ElevatedButton(
+              onPressed: (){
+                patientsInfo = ref.watch(patientsProvider);
+                ref.read(patientsProvider.notifier).getAssignedPatientsData(assignedPatients);
+                showPatients = true;
+              },
+              child: const Text('Mostrar pacientes')),
+
+            /*Expanded(
               child: Visibility(
                 visible: userInfo.assignedPatients?[0]!='No disponible',
                 child: ListView.builder(
@@ -184,7 +189,7 @@ class DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
                 
               },
               child: const Text('+'),
-            ),
+            ),*/
 
           ],
         ),
