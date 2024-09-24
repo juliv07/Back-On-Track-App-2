@@ -4,7 +4,6 @@ import 'package:back_on_track_app_2/presentations/doctor/doctor_search_patient_s
 import 'package:back_on_track_app_2/presentations/patient/patient_data_screen.dart';
 import 'package:back_on_track_app_2/providers/patients_provider.dart';
 import 'package:back_on_track_app_2/providers/user_data_provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -77,11 +76,7 @@ class DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
   Widget build(BuildContext context) {
     User userInfo = ref.watch(userInfoProvider);
 
-    List<String>? assignedPatients = userInfo.assignedPatients;
-
-    List patientsInfo;
-
-    bool showPatients;
+    List<User> patientsInfo = ref.watch(patientsProvider);
     
     return Scaffold(
       appBar: AppBar(title: Text('Bienvenido, Dr. ${userInfo.surname}'),),
@@ -148,32 +143,31 @@ class DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
 
             ElevatedButton(
               onPressed: (){
-                patientsInfo = ref.watch(patientsProvider);
-                ref.read(patientsProvider.notifier).getAssignedPatientsData(assignedPatients);
-                showPatients = true;
+                ref.read(patientsProvider.notifier).getAssignedPatientsData();
+                
+                print('PACIENTEESSS:$patientsInfo');
+                
               },
               child: const Text('Mostrar pacientes')),
 
-            /*Expanded(
-              child: Visibility(
-                visible: userInfo.assignedPatients?[0]!='No disponible',
-                child: ListView.builder(
-                  itemCount: userInfo.assignedPatients?.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      color: const Color.fromARGB(255, 194, 245, 255),
-                      child: ListTile(
-                        title: Text(patientsInfo.toString()),
-                        //subtitle: const Text('ID:'),
-                        onTap: (){context.pushNamed(PatientDataScreen.name);},
-                        leading: const Icon(Icons.person_outline_outlined),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
             Expanded(
+              child: ListView.builder(
+                itemCount: patientsInfo.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    color: const Color.fromARGB(255, 194, 245, 255),
+                    child: ListTile(
+                      title: Text(patientsInfo[index].surname),
+                      subtitle: Text(patientsInfo[index].name),
+                      onTap: (){context.pushNamed(PatientDataScreen.name);},
+                      leading: const Icon(Icons.person_outline_outlined),
+                    ),
+                  );
+                },
+              ),
+            
+            ),
+            /*Expanded(
               child: Visibility(
                 visible: userInfo.assignedPatients?[0]=='No disponible',
                 child: const Padding(
@@ -181,7 +175,7 @@ class DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
                   child: Text("Usted todavía no tiene pacientes. Agregue uno con el botón '+'.", textAlign: TextAlign.center,),
                 )
               )
-            ),
+            ),*/
             FloatingActionButton(
               onPressed: (){
                 print('yendoooo');
@@ -189,8 +183,7 @@ class DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
                 
               },
               child: const Text('+'),
-            ),*/
-
+            ),
           ],
         ),
 

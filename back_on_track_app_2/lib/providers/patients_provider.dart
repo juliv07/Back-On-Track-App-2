@@ -1,17 +1,25 @@
 import 'package:back_on_track_app_2/entities/User.dart';
+import 'package:back_on_track_app_2/providers/user_data_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 StateProvider<String> surnameProvider = StateProvider((ref) => ''); 
 
 final patientsProvider = StateNotifierProvider<PatientsNotifier, List<User>>(
-  (ref) => PatientsNotifier(FirebaseFirestore.instance),
+(ref) {
+  
+  final userInfo = ref.read(userInfoProvider);
+  return PatientsNotifier(FirebaseFirestore.instance, userInfo);
+  
+  }
 );
 
 class PatientsNotifier extends StateNotifier<List<User>>{
   final FirebaseFirestore db;
 
-  PatientsNotifier(this.db) : super([]);
+  User userInfo;
+
+  PatientsNotifier(this.db,  this.userInfo) : super([]);
 
   Future<void> getPatientsBySurname(String query) async{
     final docs = db.collection('users')
@@ -25,22 +33,23 @@ class PatientsNotifier extends StateNotifier<List<User>>{
     state = users.docs.map((d) => d.data()).toList();
   }
 
-  Future<void> getAssignedPatientsData(List<String>? assignedPatientIds) async {
-    List<User> auxPatients = [];
-  
-    assignedPatientIds?.forEach((element) async {
-      final docs = db.collection('users')
-        .doc(element)
-        .withConverter(
-        fromFirestore: User.fromFirestore, 
-        toFirestore: (User user,_) => user.toFirestore()
-        );
-      final auxPatient = await docs.get();
-      auxPatients.add(auxPatient.data()!);
-    });
+  Future<void> getAssignedPatientsData() async {
+
+    List<String>? assignedPatientIds = userInfo.assignedPatients;
+
+    final docs = db.collection('users').withConverter(
+      fromFirestore: User.fromFirestore, 
+      toFirestore: (User user, _) => user.toFirestore());
+
+    final users = await docs.get();
+
+    List<User> usersList = users.docs.map((d)=>d.data()).toList();
+
+    List<User> auxPatients = usersList.where((user) {
+      return assignedPatientIds?.contains(user.userId) ?? false;
+    }).toList();
     
-    state = auxPatients.toList(); 
-    
+    state = auxPatients; 
   }
 }
     
