@@ -1,5 +1,5 @@
 class Tracking{
-  String patient;
+  String patientId;
   
   int year;
   int month;
@@ -9,18 +9,18 @@ class Tracking{
   int second;
   int millisecond;
 
-  int yaw1;
-  int yaw2;
-  int pitch1;
-  int pithc2;
-  int roll1;
-  int roll2;
+  int? yaw1;
+  int? yaw2;
+  int? pitch1;
+  int? pithc2;
+  int? roll1;
+  int? roll2;
 
-  int kneeAngle1;
-  int kneeAngle2;
+  int? kneeAngle1;
+  int? kneeAngle2;
 
   Tracking({
-    required this.patient,
+    required this.patientId,
     required this.year,
     required this.month,
     required this.date,
@@ -28,13 +28,13 @@ class Tracking{
     required this.minute,
     required this.second,
     required this.millisecond,
-    required this.yaw1,
-    required this.yaw2,
-    required this.pitch1,
-    required this.pithc2,
-    required this.roll1,
-    required this.roll2,
-    required this.kneeAngle1,
-    required this.kneeAngle2,
+    this.yaw1,
+    this.yaw2,
+    this.pitch1,
+    this.pithc2,
+    this.roll1,
+    this.roll2,
+    this.kneeAngle1,
+    this.kneeAngle2,
   });
 }

@@ -218,6 +218,7 @@ class DoctorSignUpScreen extends ConsumerWidget {
                           'phone':phoneController.text,
                           'email':emailController.text,
                           'password':pswdController.text,
+                          'assignedPatients': [],
                           'healthCenter':healthCenterController.text,
                         };
                         
@@ -232,6 +233,7 @@ class DoctorSignUpScreen extends ConsumerWidget {
                           phone:phoneController.text,
                           email:emailController.text,
                           password:pswdController.text,
+                          assignedPatients: [],
                           healthCenter:healthCenterController.text,       
                         );
                         context.goNamed(DoctorHomeScreen.name);

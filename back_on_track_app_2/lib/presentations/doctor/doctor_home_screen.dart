@@ -1,7 +1,7 @@
 
 import 'package:back_on_track_app_2/entities/User.dart';
 import 'package:back_on_track_app_2/presentations/doctor/doctor_search_patient_screen.dart';
-import 'package:back_on_track_app_2/presentations/patient/patient_data_screen.dart';
+import 'package:back_on_track_app_2/presentations/doctor/patient_data_screen.dart';
 import 'package:back_on_track_app_2/providers/patients_provider.dart';
 import 'package:back_on_track_app_2/providers/user_data_provider.dart';
 import 'package:flutter/material.dart';
@@ -91,17 +91,19 @@ class DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
         destinations: const <Widget>[
           NavigationDestination(
               selectedIcon: Icon(Icons.home),
-              icon: Badge(
-                label: Text('4'),
-                child: Icon(Icons.home_outlined),
-              ),
+              icon: //Badge(
+                //label: Text('4'),
+                //child: 
+                Icon(Icons.home_outlined),
+              //),
               label: 'Home'),
           NavigationDestination(
               //selectedIcon: Icon(Icons.list_alt),
-              icon: Badge(
-                label: Text('2'),
-                child: Icon(Icons.list),
-              ),
+              icon: //Badge(
+                //label: Text('2'),
+                //child: 
+                Icon(Icons.list),
+              //),
               label: 'Pacientes'),
           NavigationDestination(
               selectedIcon: Icon(Icons.person),
@@ -159,7 +161,10 @@ class DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
                     child: ListTile(
                       title: Text(patientsInfo[index].surname),
                       subtitle: Text(patientsInfo[index].name),
-                      onTap: (){context.pushNamed(PatientDataScreen.name);},
+                      onTap: (){
+                        ref.read(selectedPatientProvider.notifier).state = patientsInfo[index].userId;
+                        context.pushNamed(PatientDataScreen.name);
+                      },
                       leading: const Icon(Icons.person_outline_outlined),
                     ),
                   );

@@ -8,3 +8,5 @@ FirebaseFirestore db = FirebaseFirestore.instance;
 StateProvider<String> emailProvider = StateProvider((ref) => '');
 
 StateProvider<User> userInfoProvider = StateProvider((ref) => User(userId: '', isDoctor: false, name: '', surname: '', email: '', password: '', phone: '', assignedPatients: []));
+
+StateProvider<String> selectedPatientProvider = StateProvider((ref) => '');

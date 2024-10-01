@@ -14,7 +14,7 @@ import 'package:back_on_track_app_2/presentations/password_settings/new_password
 import 'package:back_on_track_app_2/presentations/password_settings/password_verification_code_screen.dart';
 import 'package:back_on_track_app_2/presentations/patient/bt_connection_screen.dart';
 import 'package:back_on_track_app_2/presentations/patient/patient_account_settings_screen.dart';
-import 'package:back_on_track_app_2/presentations/patient/patient_data_screen.dart';
+import 'package:back_on_track_app_2/presentations/doctor/patient_data_screen.dart';
 import 'package:back_on_track_app_2/presentations/patient/patient_edit_profile_screen.dart';
 import 'package:back_on_track_app_2/presentations/patient/patient_home_screen.dart';
 import 'package:back_on_track_app_2/presentations/patient/patient_signup_screen.dart';
