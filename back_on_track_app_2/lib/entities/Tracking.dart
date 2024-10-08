@@ -9,12 +9,12 @@ class Tracking{
   int second;
   int millisecond;
 
-  int? yaw1;
-  int? yaw2;
-  int? pitch1;
-  int? pithc2;
-  int? roll1;
-  int? roll2;
+  int? z1; //roll
+  int? z2;
+  int? y1; //pitch
+  int? y2;
+  int? x1; //yaw
+  int? x2;
 
   int? kneeAngle1;
   int? kneeAngle2;
@@ -28,12 +28,12 @@ class Tracking{
     required this.minute,
     required this.second,
     required this.millisecond,
-    this.yaw1,
-    this.yaw2,
-    this.pitch1,
-    this.pithc2,
-    this.roll1,
-    this.roll2,
+    this.x1,
+    this.y1,
+    this.z1,
+    this.x2,
+    this.y2,
+    this.z2,
     this.kneeAngle1,
     this.kneeAngle2,
   });

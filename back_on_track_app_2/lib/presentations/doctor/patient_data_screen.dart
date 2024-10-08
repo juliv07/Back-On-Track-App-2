@@ -11,13 +11,17 @@ class PatientDataScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
 
-    final tracking = ref.watch(trackingProvider);
+    List tracking = ref.watch(trackingProvider);
+
+    tracking.forEach((element) { 
+      
+    });
 
     final selectedPatientId = ref.watch(selectedPatientProvider);
 
     ref.read(trackingProvider.notifier).getTracking(selectedPatientId);
 
-    print(tracking);
+    List<FlSpot> spots = [];
 
     return MaterialApp(
       home: Scaffold(
@@ -31,16 +35,7 @@ class PatientDataScreen extends ConsumerWidget {
                 lineBarsData: [
                   LineChartBarData(
                     show: true,
-                    spots: const[
-                      FlSpot(0, 0),
-                      FlSpot(1, 2),
-                      FlSpot(2, 1.5),
-                      FlSpot(3, 3),
-                      FlSpot(5, 1),
-                      FlSpot(6, 2),
-                      FlSpot(8, 0.5),
-                      FlSpot(10, 2.5),
-                    ],
+                    spots: spots,
                     color: Colors.red,
                     gradient: const LinearGradient(
                       colors:[
