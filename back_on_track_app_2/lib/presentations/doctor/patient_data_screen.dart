@@ -18,8 +18,15 @@ class PatientDataScreen extends ConsumerWidget {
     
     //print('TRACKING: $tracking');
 
-    /*int timestamp = tracking.timestamp;
-    DateTime second = DateTime.fromMicrosecondsSinceEpoch(timestamp);*/
+    DateTime date;
+
+    if(tracking.timestamp!=0){
+      int timestamp = tracking.timestamp;
+      date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    }
+    else{
+      date = DateTime.now();
+    }
   
     List<FlSpot> spotsKnee1 = [];
     List<FlSpot> spotsKnee2 = [];
@@ -101,6 +108,16 @@ class PatientDataScreen extends ConsumerWidget {
           child: Center(
             child: Column(
               children: [
+                Visibility(
+                  visible: tracking.timestamp == 0,
+                  child: const Text('Todavía no hay información de este paciente.')
+                ),
+                Visibility(
+                  visible: tracking.timestamp != 0,
+                  child: Text(date.toString()), 
+                ),
+                
+                const SizedBox(height: 20),
                 const Text('Flexión rodilla 1', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 22),),
                 AspectRatio(
                   aspectRatio: 1.1,

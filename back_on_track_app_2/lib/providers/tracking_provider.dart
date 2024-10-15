@@ -29,8 +29,14 @@ class TrackingNotifier extends StateNotifier<Tracking>{
     final reading = await docs.get();
 
     //print('READINGS: $readings');
+    
+    final readingList = reading.docs.map((d) => d.data()).toList();
 
-    state = reading.docs.map((d) => d.data()).toList()[0];
+    if(readingList.isEmpty){
+      state =Tracking(patientId: '', timestamp: 0, x1: [], y1: [], z1: [], x2: [], y2: [], z2: [], kneeAngle1: [], kneeAngle2: []);
+    } else{
+      state = readingList[0];
+    }
 
     //print ('STATE: $state');
 
