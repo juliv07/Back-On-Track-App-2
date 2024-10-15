@@ -1,40 +1,64 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Tracking{
   String patientId;
   
-  int year;
-  int month;
-  int date;
-  int hour;
-  int minute;
-  int second;
-  int millisecond;
+  int timestamp;
 
-  int? z1; //roll
-  int? z2;
-  int? y1; //pitch
-  int? y2;
-  int? x1; //yaw
-  int? x2;
+  List z1; //roll
+  List z2;
+  List y1; //pitch
+  List y2;
+  List x1; //yaw
+  List x2;
 
-  int? kneeAngle1;
-  int? kneeAngle2;
+  List kneeAngle1;
+  List kneeAngle2;
 
   Tracking({
     required this.patientId,
-    required this.year,
-    required this.month,
-    required this.date,
-    required this.hour,
-    required this.minute,
-    required this.second,
-    required this.millisecond,
-    this.x1,
-    this.y1,
-    this.z1,
-    this.x2,
-    this.y2,
-    this.z2,
-    this.kneeAngle1,
-    this.kneeAngle2,
+    required this.timestamp,
+    required this.x1,
+    required this.y1,
+    required this.z1,
+    required this.x2,
+    required this.y2,
+    required this.z2,
+    required this.kneeAngle1,
+    required this.kneeAngle2,
   });
+
+  factory Tracking.fromFirestore(
+      DocumentSnapshot<Map<String, dynamic>> snapshot,
+      SnapshotOptions? options,
+    ){
+      final data = snapshot.data();
+      return Tracking(
+        patientId: data?['patientId'], 
+        timestamp: data?['timestamp'],
+        x1: data?['x1'],
+        y1: data?['y1'],
+        z1: data?['z1'],
+        x2: data?['x2'],
+        y2: data?['y2'],
+        z2: data?['z2'],
+        kneeAngle1: data?['flex1'],
+        kneeAngle2: data?['flex2'],
+      );
+    }
+  
+    Map<String, dynamic> toFirestore(){
+      return{
+        'patientId': patientId,
+        'timestamp': timestamp,
+        'x1': x1,
+        'y1': y1,
+        'z1': z1,
+        'x2': x2,
+        'y2': y2,
+        'z2': z2,
+        'flex1': kneeAngle1,
+        'flex2': kneeAngle2,
+      };
+    }
 }
