@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:back_on_track_app_2/entities/Tracking.dart';
 import 'package:back_on_track_app_2/providers/tracking_provider.dart';
 import 'package:back_on_track_app_2/providers/user_data_provider.dart';
@@ -16,7 +18,7 @@ class PatientDataScreen extends ConsumerWidget {
     final selectedPatientId = ref.watch(selectedPatientProvider);
     ref.read(trackingProvider.notifier).getTracking(selectedPatientId);
     
-    //print('TRACKING: $tracking');
+    print('TRACKING: $tracking');
 
     DateTime date;
 
@@ -39,7 +41,8 @@ class PatientDataScreen extends ConsumerWidget {
 
     for (var i = 0; i < tracking.kneeAngle1.length; i++) {
       int x = i;
-      int y = tracking.kneeAngle1[i];
+      double y = double.parse(tracking.kneeAngle1[i].toString().substring(tracking.kneeAngle1[i].toString().indexOf(' ')));
+      print(y);
       final spot = FlSpot(x.toDouble(), y.toDouble());
 
       spotsKnee1.add(spot); 
@@ -47,15 +50,14 @@ class PatientDataScreen extends ConsumerWidget {
 
     for (var i = 0; i < tracking.kneeAngle2.length; i++) {
       int x = i;
-      int y = tracking.kneeAngle2[i];
-      final spot = FlSpot(x.toDouble(), y.toDouble());
+      double y = double.parse(tracking.kneeAngle2[i].toString().substring(tracking.kneeAngle2[i].toString().indexOf(' ')));      final spot = FlSpot(x.toDouble(), y.toDouble());
 
       spotsKnee2.add(spot); 
     }
 
     for (var i = 0; i < tracking.x1.length; i++) {
       int x = i;
-      int y = tracking.x1[i];
+      double y = double.parse(tracking.x1[i].toString().substring(tracking.x1[i].toString().indexOf(' ')));
       final spot = FlSpot(x.toDouble(), y.toDouble());
 
       spotsx1.add(spot); 
@@ -63,7 +65,7 @@ class PatientDataScreen extends ConsumerWidget {
 
     for (var i = 0; i < tracking.y1.length; i++) {
       int x = i;
-      int y = tracking.y1[i];
+      double y = double.parse(tracking.y1[i].toString().substring(tracking.y1[i].toString().indexOf(' ')));
       final spot = FlSpot(x.toDouble(), y.toDouble());
 
       spotsy1.add(spot); 
@@ -71,7 +73,7 @@ class PatientDataScreen extends ConsumerWidget {
 
     for (var i = 0; i < tracking.z1.length; i++) {
       int x = i;
-      int y = tracking.z1[i];
+      double y = double.parse(tracking.z1[i].toString().substring(tracking.z1[i].toString().indexOf(' ')));
       final spot = FlSpot(x.toDouble(), y.toDouble());
 
       spotsz1.add(spot);
@@ -79,7 +81,7 @@ class PatientDataScreen extends ConsumerWidget {
 
     for (var i = 0; i < tracking.x2.length; i++) {
       int x = i;
-      int y = tracking.x2[i];
+      double y = double.parse(tracking.x2[i].toString().substring(tracking.x2[i].toString().indexOf(' ')));
       final spot = FlSpot(x.toDouble(), y.toDouble());
 
       spotsx2.add(spot); 
@@ -87,7 +89,7 @@ class PatientDataScreen extends ConsumerWidget {
 
     for (var i = 0; i < tracking.y2.length; i++) {
       int x = i;
-      int y = tracking.y2[i];
+      double y = double.parse(tracking.y2[i].toString().substring(tracking.y2[i].toString().indexOf(' ')));
       final spot = FlSpot(x.toDouble(), y.toDouble());
 
       spotsy2.add(spot); 
@@ -95,11 +97,14 @@ class PatientDataScreen extends ConsumerWidget {
 
     for (var i = 0; i < tracking.z2.length; i++) {
       int x = i;
-      int y = tracking.z2[i];
+      double y = double.parse(tracking.z2[i].toString().substring(tracking.z2[i].toString().indexOf(' ')));
       final spot = FlSpot(x.toDouble(), y.toDouble());
 
       spotsz2.add(spot); 
     }
+
+    print(tracking.z1);
+    print(spotsz2);
 
     return MaterialApp(
       home: Scaffold(

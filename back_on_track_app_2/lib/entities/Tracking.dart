@@ -34,16 +34,17 @@ class Tracking{
     ){
       final data = snapshot.data();
       return Tracking(
-        patientId: data?['patientId'], 
+        patientId: data?['patientId'],
         timestamp: data?['timestamp'],
-        x1: data?['x1'],
-        y1: data?['y1'],
-        z1: data?['z1'],
-        x2: data?['x2'],
-        y2: data?['y2'],
-        z2: data?['z2'],
-        kneeAngle1: data?['flex1'],
-        kneeAngle2: data?['flex2'],
+
+        x1: data?['valoresX1'],
+        y1: data?['valoresy1'],
+        z1: data?['valoresz1'],
+        x2: data?['valoresX2'],
+        y2: data?['valoresy2'],
+        z2: data?['valoresz2'],
+        kneeAngle1: data?['valoresFlex1'],
+        kneeAngle2: data?['valoresFlex2'],
       );
     }
   
@@ -51,14 +52,14 @@ class Tracking{
       return{
         'patientId': patientId,
         'timestamp': timestamp,
-        'x1': x1,
-        'y1': y1,
-        'z1': z1,
-        'x2': x2,
-        'y2': y2,
-        'z2': z2,
-        'flex1': kneeAngle1,
-        'flex2': kneeAngle2,
+        'valoresX1': x1,
+        'valoresy1': y1,
+        'valoresz1': z1,
+        'valoresX2': x2,
+        'valoresy2': y2,
+        'valoresz2': z2,
+        'valoresFlex1': kneeAngle1,
+        'valoresFlex2': kneeAngle2,
       };
     }
 }
