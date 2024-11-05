@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Tracking{
-  String patientId;
+  List patientId;
   
-  int timestamp;
+  List timestamp;
 
   List z1; //roll
   List z2;
@@ -34,24 +34,24 @@ class Tracking{
     ){
       final data = snapshot.data();
       return Tracking(
-        patientId: data?['patientId'],
-        timestamp: data?['timestamp'],
+        patientId: data?['patientId'] ?? [],
+        timestamp: data?['timeStamp'] ?? [],
 
-        x1: data?['valoresX1'],
-        y1: data?['valoresy1'],
-        z1: data?['valoresz1'],
-        x2: data?['valoresX2'],
-        y2: data?['valoresy2'],
-        z2: data?['valoresz2'],
-        kneeAngle1: data?['valoresFlex1'],
-        kneeAngle2: data?['valoresFlex2'],
+        x1: data?['valoresX1'] ?? [],
+        y1: data?['valoresy1'] ?? [],
+        z1: data?['valoresz1'] ?? [],
+        x2: data?['valoresX2'] ?? [],
+        y2: data?['valoresy2'] ?? [],
+        z2: data?['valoresz2'] ?? [],
+        kneeAngle1: data?['valoresFlex1'] ?? [],
+        kneeAngle2: data?['valoresFlex2'] ?? [],
       );
     }
   
     Map<String, dynamic> toFirestore(){
       return{
         'patientId': patientId,
-        'timestamp': timestamp,
+        'timeStamp': timestamp,
         'valoresX1': x1,
         'valoresy1': y1,
         'valoresz1': z1,

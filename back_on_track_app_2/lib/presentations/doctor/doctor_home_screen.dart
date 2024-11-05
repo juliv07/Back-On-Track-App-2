@@ -156,17 +156,14 @@ class DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
               child: ListView.builder(
                 itemCount: patientsInfo.length,
                 itemBuilder: (context, index) {
-                  return Card(
-                    color: const Color.fromARGB(255, 194, 245, 255),
-                    child: ListTile(
-                      title: Text(patientsInfo[index].surname),
-                      subtitle: Text(patientsInfo[index].name),
-                      onTap: (){
-                        ref.read(selectedPatientProvider.notifier).state = patientsInfo[index].userId;
-                        context.pushNamed(PatientDataScreen.name);
-                      },
-                      leading: const Icon(Icons.person_outline_outlined),
-                    ),
+                  return ListTile(
+                    title: Text(patientsInfo[index].surname),
+                    subtitle: Text(patientsInfo[index].name),
+                    onTap: (){
+                      ref.read(selectedPatientProvider.notifier).state = patientsInfo[index].userId;
+                      context.pushNamed(PatientDataScreen.name);
+                    },
+                    leading: const Icon(Icons.person_outline_outlined),
                   );
                 },
               ),

@@ -135,9 +135,31 @@ class _NavigationExampleState extends State<NavigationExample> {
 
           //BLUETOOTH
           Center(
-            child: ElevatedButton(onPressed:(){
-              context.push('/btConnection');
-            }, child: const Text('Conectar')),
+            child: ElevatedButton(
+              onPressed:(){
+                //context.push('/btConnection');
+                SnackBar featureNotAvailable = SnackBar(
+                  content: const Text.rich(
+                    TextSpan(
+                      text: 'Esta función todavía no está disponible.\n',
+                      style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold,), 
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Seguimos mejorando Back On Track, mantente atento a las novedades.',
+                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.normal, fontSize: 14),
+                        ),
+                      ],
+                    ),
+                  ),
+                  backgroundColor: Colors.yellow,
+                  shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                duration: const Duration(seconds: 5),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(featureNotAvailable);
+            }, 
+            child: const Text('Conectar')),
           ),
 
           //PROFILE

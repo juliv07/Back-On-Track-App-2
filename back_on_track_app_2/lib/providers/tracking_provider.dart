@@ -14,14 +14,14 @@ final trackingProvider = StateNotifierProvider<TrackingNotifier, Tracking> ((ref
 
 class TrackingNotifier extends StateNotifier<Tracking>{
 
-  TrackingNotifier() : super(Tracking(patientId: '', timestamp: 0, x1: [], y1: [], z1: [], x2: [], y2: [], z2: [], kneeAngle1: [], kneeAngle2: []));
+  TrackingNotifier() : super(Tracking(patientId: [], timestamp: [], x1: [], y1: [], z1: [], x2: [], y2: [], z2: [], kneeAngle1: [], kneeAngle2: []));
 
   FirebaseFirestore db = FirebaseFirestore.instance;
 
   Future<void> getTracking(String selectedPatientId) async{
 
     final docs = db.collection('tracking')
-    .where('patientId', isEqualTo: selectedPatientId)
+    .where('patientId', arrayContains: selectedPatientId)
     .withConverter(
       fromFirestore: Tracking.fromFirestore, 
       toFirestore: (Tracking tracking,_) => tracking.toFirestore()
@@ -33,7 +33,7 @@ class TrackingNotifier extends StateNotifier<Tracking>{
     final readingList = reading.docs.map((d) => d.data()).toList();
 
     if(readingList.isEmpty){
-      state =Tracking(patientId: '', timestamp: 0, x1: [], y1: [], z1: [], x2: [], y2: [], z2: [], kneeAngle1: [], kneeAngle2: []);
+      state =Tracking(patientId: [], timestamp: [], x1: [], y1: [], z1: [], x2: [], y2: [], z2: [], kneeAngle1: [], kneeAngle2: []);
     } else{
       state = readingList[0];
     }
