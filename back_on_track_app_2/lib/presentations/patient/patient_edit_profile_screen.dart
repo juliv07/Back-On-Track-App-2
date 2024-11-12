@@ -1,4 +1,7 @@
+import 'package:back_on_track_app_2/entities/User.dart';
+import 'package:back_on_track_app_2/providers/user_data_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class ProfileSetting{
@@ -15,33 +18,42 @@ class ProfileSetting{
     });
   }
 
-List <ProfileSetting> profileSettings = [
-  ProfileSetting(
-    title: 'Nombre', 
-    subtitle: 'Sandra Casandra', 
-    trailing: const Icon(Icons.edit), 
-    route: '/editName'
-    ),
-  ProfileSetting(
-    title: 'Edad', 
-    subtitle: '32 años', 
-    trailing: const Icon(Icons.edit), 
-    route: '/editAge'
-    ),
-  ProfileSetting(
-    title: 'Antecedentes', 
-    subtitle: 'ACV', 
-    trailing: const Icon(Icons.edit), 
-    route: '/editPreviousInfo'
-    ),
-];
-
-class PatientEditProfileScreen extends StatelessWidget {
-  const PatientEditProfileScreen({super.key});
+class PatientEditProfileScreen extends ConsumerWidget {
+  PatientEditProfileScreen({super.key});
   static const String name = 'patientEditProfile';
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+
+     User user = ref.watch(userInfoProvider);
+
+    List <ProfileSetting> profileSettings = [
+      ProfileSetting(
+        title: 'Nombre', 
+        subtitle: '${user.name} ${user.surname}', 
+        trailing: const Icon(Icons.edit), 
+        route: '/editName'
+        ),
+      ProfileSetting(
+        title: 'Email', 
+        subtitle: user.email, 
+        trailing: const Icon(Icons.edit), 
+        route: '/editEmail'
+        ),
+      ProfileSetting(
+        title: 'Teléfono', 
+        subtitle: user.phone, 
+        trailing: const Icon(Icons.edit), 
+        route: '/editPhone'
+        ),
+      ProfileSetting(
+        title: 'Antecedentes', 
+        subtitle: user.previousInfo??'No tiene', 
+        trailing: const Icon(Icons.edit), 
+        route: '/editPreviousInfo'
+      ),
+    ];
+
     return Scaffold(
       appBar: AppBar(title: const Text('Editar perfil')),
       body: Center(
@@ -50,10 +62,7 @@ class PatientEditProfileScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const CircleAvatar(
-                radius: 120,
-                backgroundImage: NetworkImage('https://e00-elmundo.uecdn.es/assets/multimedia/imagenes/2023/09/29/16959883761891.jpg')
-              ),
+              const Icon(Icons.person, size: 150, color: Colors.lightBlue,),
               Expanded(
                 child: ListView.builder(
                   itemCount: profileSettings.length,
@@ -66,7 +75,26 @@ class PatientEditProfileScreen extends StatelessWidget {
                         subtitle: Text(profileSettings[index].subtitle),
                         trailing: profileSettings[index].trailing,
                         onTap: () {
-                          context.push(profileSettings[index].route);
+                          SnackBar featureNotAvailable = SnackBar(
+                            content: const Text.rich(
+                              TextSpan(
+                                text: 'Esta función todavía no está disponible.\n',
+                                style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold,), 
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: 'Seguimos mejorando Back On Track, próximamente vas a poder editar tu perfil cuando quieras. Mantente atento a las novedades.',
+                                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.normal, fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            backgroundColor: Colors.yellow,
+                            shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          duration: const Duration(seconds: 5),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(featureNotAvailable);
                         },
                       ),
                     );

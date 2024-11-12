@@ -13,8 +13,8 @@ class ProfileSetting{
   }
 
 List <ProfileSetting> profileSettings = [
-  ProfileSetting(title: 'Nombre', subtitle: 'Dr. Nefario', leading: const Icon(Icons.badge)),
-  ProfileSetting(title: 'Institución', subtitle: 'Hospital Italiano', leading: const Icon(Icons.local_hospital)),
+  ProfileSetting(title: 'Nombre', subtitle: 'Pronto podrás ver esta información.', leading: const Icon(Icons.badge)),
+  ProfileSetting(title: 'Institución', subtitle: 'Pronto podrás ver esta información.', leading: const Icon(Icons.local_hospital)),
 ];
 
 class PatientViewDoctorScreen extends StatelessWidget {
@@ -31,10 +31,7 @@ class PatientViewDoctorScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const CircleAvatar(
-                radius: 120,
-                backgroundImage: NetworkImage('https://nationaleczema.org/wp-content/uploads/2019/01/shutterstock_624008096.jpg')
-              ),
+              const Icon(Icons.person, size: 150, color: Colors.lightBlue,),
               Expanded(
                 child: ListView.builder(
                   itemCount: profileSettings.length,

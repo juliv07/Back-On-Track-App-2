@@ -5,32 +5,72 @@ class AccountSetting{
   String title;
   Icon leading;
   Icon trailing;
-  String route;
+  SnackBar? snackbar;
+  String? route;
 
   AccountSetting({
     required this.title,
     required this.leading,
     required this.trailing,
-    required this.route,
+    this.snackbar,
+    this.route,
   });
 }
 
 List <AccountSetting> accountSettings = [
   AccountSetting(
-    title: 'Datos personales', 
-    leading: const Icon(Icons.badge), 
+    title: 'Mis mediciones', 
+    leading: const Icon(Icons.show_chart), 
     trailing: const Icon(Icons.arrow_forward_ios_rounded), 
-    route: '/patientData'),
+    snackbar: SnackBar(
+          content: const Text.rich(
+            TextSpan(
+              text: 'Esta función todavía no está disponible.\n',
+              style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold,), 
+              children: <TextSpan>[
+                TextSpan(
+                  text: 'Seguimos mejorando Back On Track, próximamente vas a poder ver tus propias mediciones. Mantente atento a las novedades.',
+                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.normal, fontSize: 14),
+                ),
+              ],
+            ),
+          ),
+          backgroundColor: Colors.yellow,
+          shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        duration: const Duration(seconds: 5),
+      ),
+    ),
   AccountSetting(
     title: 'Cambiar contraseña', 
     leading: const Icon(Icons.key), 
     trailing: const Icon(Icons.arrow_forward_ios_rounded), 
-    route: '/changePassword'),
+    snackbar:  SnackBar(content: const Text.rich(
+            TextSpan(
+              text: 'Esta función todavía no está disponible.\n',
+              style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold,), 
+              children: <TextSpan>[
+                TextSpan(
+                  text: 'Seguimos mejorando Back On Track, próximamente vas a poder cambiar tu contraseña. Mantente atento a las novedades.',
+                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.normal, fontSize: 14),
+                ),
+              ],
+            ),
+          ),
+          backgroundColor: Colors.yellow,
+          shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        duration: const Duration(seconds: 5),
+      ),
+  ),
   AccountSetting(
     title: 'Cerrar sesión', 
     leading: const Icon(Icons.logout), 
-    trailing: const Icon(Icons.arrow_forward_rounded), 
-    route: '/logOut')
+    trailing: const Icon(Icons.arrow_forward_ios_rounded), 
+    route: '/logOut'
+  )
 ];
 
 class PatientAccountSettingsScreen extends StatelessWidget {
@@ -59,7 +99,11 @@ class PatientAccountSettingsScreen extends StatelessWidget {
                       leading: accountSettings[index].leading,
                       trailing: accountSettings[index].trailing,
                       onTap: () {
-                        context.push(accountSettings[index].route);
+                        if(accountSettings[index].route != null){
+                          context.push(accountSettings[index].route.toString());
+                        } else{
+                          ScaffoldMessenger.of(context).showSnackBar(accountSettings[index].snackbar!);
+                        }
                       },
                     ),
                   );

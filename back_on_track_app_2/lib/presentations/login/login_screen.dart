@@ -182,7 +182,7 @@ class LoginScreen extends ConsumerWidget {
                                 assignedPatients: assignedPatientsFromDB, 
                                 healthCenter: healthCenterFromDB
                             );
-                            context.pushNamed(DoctorHomeScreen.name);
+                            context.goNamed(DoctorHomeScreen.name);
                           }
                           else{
                             ref.read(userInfoProvider.notifier).state =
@@ -200,7 +200,7 @@ class LoginScreen extends ConsumerWidget {
                                 weight: weightFromDB,
                                 previousInfo: previousInfoFromDB
                             );
-                            context.pushNamed(PatientHomeScreen.name);
+                            context.goNamed(PatientHomeScreen.name);
                           } //goNamed
                         }
 
