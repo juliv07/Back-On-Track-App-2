@@ -48,23 +48,23 @@ class PatientDataScreen extends ConsumerWidget {
     List<FlSpot> spotsy2 = [];
     List<FlSpot> spotsz2 = [];
 
-    for (var i = 98; i < tracking.kneeAngle1.length; i++) {
-      int x = i;
+    for (var i = 0; i < tracking.kneeAngle1.length; i++) {
+      int x = i; 
       double y = double.parse(tracking.kneeAngle1[i].toString().substring(tracking.kneeAngle1[i].toString().indexOf(' ')));
-      //print(y);
+      print(y);
       final spot = FlSpot(x.toDouble(), y.toDouble());
 
       spotsKnee1.add(spot); 
     }
 
-    for (var i = 98; i < tracking.kneeAngle2.length; i++) {
+    for (var i = 0; i < tracking.kneeAngle2.length; i++) {
       int x = i;
       double y = double.parse(tracking.kneeAngle2[i].toString().substring(tracking.kneeAngle2[i].toString().indexOf(' ')));      final spot = FlSpot(x.toDouble(), y.toDouble());
 
       spotsKnee2.add(spot); 
     }
 
-    for (var i = 98; i < tracking.x1.length; i++) {
+    for (var i = 0; i < tracking.x1.length; i++) {
       int x = i;
       double y = double.parse(tracking.x1[i].toString().substring(tracking.x1[i].toString().indexOf(' ')));
       final spot = FlSpot(x.toDouble(), y.toDouble());
@@ -72,7 +72,7 @@ class PatientDataScreen extends ConsumerWidget {
       spotsx1.add(spot); 
     }
 
-    for (var i = 98; i < tracking.y1.length; i++) {
+    for (var i = 0; i < tracking.y1.length; i++) {
       int x = i;
       double y = double.parse(tracking.y1[i].toString().substring(tracking.y1[i].toString().indexOf(' ')));
       final spot = FlSpot(x.toDouble(), y.toDouble());
@@ -80,7 +80,7 @@ class PatientDataScreen extends ConsumerWidget {
       spotsy1.add(spot); 
     }
 
-    for (var i = 98; i < tracking.z1.length; i++) {
+    for (var i = 0; i < tracking.z1.length; i++) {
       int x = i;
       double y = double.parse(tracking.z1[i].toString().substring(tracking.z1[i].toString().indexOf(' ')));
       final spot = FlSpot(x.toDouble(), y.toDouble());
@@ -88,7 +88,7 @@ class PatientDataScreen extends ConsumerWidget {
       spotsz1.add(spot);
     }
 
-    for (var i = 98; i < tracking.x2.length; i++) {
+    for (var i = 0; i < tracking.x2.length; i++) {
       int x = i;
       double y = double.parse(tracking.x2[i].toString().substring(tracking.x2[i].toString().indexOf(' ')));
       final spot = FlSpot(x.toDouble(), y.toDouble());
@@ -96,7 +96,7 @@ class PatientDataScreen extends ConsumerWidget {
       spotsx2.add(spot); 
     }
 
-    for (var i = 98; i < tracking.y2.length; i++) {
+    for (var i = 0; i < tracking.y2.length; i++) {
       int x = i;
       double y = double.parse(tracking.y2[i].toString().substring(tracking.y2[i].toString().indexOf(' ')));
       final spot = FlSpot(x.toDouble(), y.toDouble());
@@ -104,7 +104,7 @@ class PatientDataScreen extends ConsumerWidget {
       spotsy2.add(spot); 
     }
 
-    for (var i = 98; i < tracking.z2.length; i++) {
+    for (var i = 0; i < tracking.z2.length; i++) {
       int x = i;
       double y = double.parse(tracking.z2[i].toString().substring(tracking.z2[i].toString().indexOf(' ')));
       final spot = FlSpot(x.toDouble(), y.toDouble());
