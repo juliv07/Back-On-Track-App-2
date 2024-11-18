@@ -1,3 +1,4 @@
+import 'package:back_on_track_app_2/entities/User.dart';
 import 'package:back_on_track_app_2/providers/user_data_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -27,22 +28,34 @@ class DoctorEditProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
 
-    String nameAndSurname = ('${ref.watch(userInfoProvider).name} ${ref.watch(userInfoProvider).surname}');
-
+    User user = ref.watch(userInfoProvider);
 
     List <ProfileSetting> profileSettings = [
       ProfileSetting(
         title: 'Nombre', 
-        subtitle: nameAndSurname, 
+        subtitle: '${user.name} ${user.surname}', 
         trailing: const Icon(Icons.edit), 
-        route: '/editName'),
-
-      ProfileSetting (
+        route: '/editName'
+        ),
+      ProfileSetting(
+        title: 'Email', 
+        subtitle: user.email, 
+        trailing: const Icon(Icons.edit), 
+        route: '/editEmail'
+        ),
+      ProfileSetting(
+        title: 'Teléfono', 
+        subtitle: user.phone, 
+        trailing: const Icon(Icons.edit), 
+        route: '/editPhone'
+        ),
+      ProfileSetting(
         title: 'Institución', 
-        subtitle: ref.watch(userInfoProvider).healthCenter ?? '',
+        subtitle: user.healthCenter ?? 'No disponible', 
         trailing: const Icon(Icons.edit), 
-        route: '/editInfo'),
-];
+        route: '/editHealthCenter'
+      ),
+    ];
 
 
     return Scaffold(
@@ -53,10 +66,7 @@ class DoctorEditProfileScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const CircleAvatar(
-                radius: 120,
-                backgroundImage: NetworkImage('https://static.vecteezy.com/system/resources/thumbnails/025/337/669/small_2x/default-male-avatar-profile-icon-social-media-chatting-online-user-free-vector.jpg')
-              ),
+              const Icon(Icons.person, size: 150, color: Colors.lightBlue),
               Expanded(
                 child: ListView.builder(
                   itemCount: profileSettings.length,
@@ -69,7 +79,26 @@ class DoctorEditProfileScreen extends ConsumerWidget {
                         subtitle: Text(profileSettings[index].subtitle),
                         trailing: profileSettings[index].trailing,
                         onTap: () {
-                          context.push(profileSettings[index].route);
+                          SnackBar featureNotAvailable = SnackBar(
+                            content: const Text.rich(
+                              TextSpan(
+                                text: 'Esta función todavía no está disponible.\n',
+                                style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold,), 
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: 'Seguimos mejorando Back On Track, próximamente vas a poder editar tu perfil cuando quieras. Mantente atento a las novedades.',
+                                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.normal, fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            backgroundColor: Colors.yellow,
+                            shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          duration: const Duration(seconds: 5),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(featureNotAvailable);
                         },
                       ),
                     );

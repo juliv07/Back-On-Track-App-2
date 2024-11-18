@@ -12,6 +12,7 @@ class LogoutScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context,ref) {
     return Scaffold(
+      appBar: AppBar(title: const Text('Cerrar sesión'),),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(8),

@@ -24,13 +24,15 @@ class Setting{
   String title;
   Icon leading;
   Icon trailing;
-  String route;
+  String? route;
+  SnackBar? snackbar;
 
   Setting({
     required this.title,
     required this.leading,
     required this.trailing,
-    required this.route,
+    this.route,
+    this.snackbar,
   });
 }
 
@@ -43,7 +45,25 @@ List <Setting> settings = [
   Setting(title: 'Mis pacientes',
           leading: const Icon(Icons.people), 
           trailing: const Icon(Icons.arrow_forward_ios_rounded),
-          route:'/doctorViewPatients'
+          snackbar: SnackBar(
+          content: const Text.rich(
+            TextSpan(
+              text: 'Esta función todavía no está disponible.\n',
+              style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold,), 
+              children: <TextSpan>[
+                TextSpan(
+                  text: 'Seguimos mejorando Back On Track, próximamente vas a poder administrar tus pacientes. Puedes ir a la pantalla de Pacientes para verlos. Mantente atento a las novedades.',
+                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.normal, fontSize: 14),
+                ),
+              ],
+            ),
+          ),
+          backgroundColor: Colors.yellow,
+          shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        duration: const Duration(seconds: 5),
+      ),
           ),
   Setting(title: 'Ajustes de cuenta',
           leading: const Icon(Icons.settings),
@@ -218,7 +238,11 @@ class DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
                         leading: settings[index].leading,
                         trailing: settings[index].trailing,
                         onTap: () {
-                          context.push(settings[index].route);
+                           if(settings[index].route != null){
+                          context.push(settings[index].route.toString());
+                        } else{
+                          ScaffoldMessenger.of(context).showSnackBar(settings[index].snackbar!);
+                        }
                         },
                       ),
                     );

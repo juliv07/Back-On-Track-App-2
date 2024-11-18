@@ -12,7 +12,8 @@ class SelectType extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
+      appBar: AppBar(title: const Text('Registrarse')),
+      body: Center(
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
