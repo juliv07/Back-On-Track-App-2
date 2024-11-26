@@ -1,14 +1,16 @@
 
+import 'package:back_on_track_app_2/entities/News.dart';
 import 'package:back_on_track_app_2/entities/User.dart';
 import 'package:back_on_track_app_2/presentations/doctor/doctor_search_patient_screen.dart';
 import 'package:back_on_track_app_2/presentations/doctor/patient_data_screen.dart';
+import 'package:back_on_track_app_2/providers/news_provider.dart';
 import 'package:back_on_track_app_2/providers/patients_provider.dart';
 import 'package:back_on_track_app_2/providers/user_data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-  List newsTitle = [
+  /*List newsTitle = [
     'Grandes avances en Back On Track','El futuro se ve brillante',
     'Últimas funciones añadidas','Conocé las redes sociales de Back On Track',
   ];
@@ -18,7 +20,7 @@ import 'package:go_router/go_router.dart';
     '"El futuro se ve brillante..." en las palabras del Project Manager de Back On Track, Feliciano Miguez, el equipo parece estar esperando un gran progreso en las próximas semanas, esperan tener el producto terminado para fines de este año y poder comenzar a utilizarlo en pacientes en rehabilitación realies. Su ilusión se siente en cada avance.',
     'Ahora podes visualizar los datos de tus pacientes de una forma nunca antes vista',
     'No te pierdas el día a día de este proyecto. Seguí a Back On Track en Instagram: @backontrack.meca'
-  ];
+  ];*/
 
 class Setting{
   String title;
@@ -97,7 +99,9 @@ class DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
     User userInfo = ref.watch(userInfoProvider);
 
     List<User> patientsInfo = ref.watch(patientsProvider);
-    
+
+    List<News> newsList = ref.watch(newsProvider);
+
     return Scaffold(
       appBar: AppBar(title: Text('Bienvenido, Dr. ${userInfo.surname}'),),
       bottomNavigationBar: NavigationBar(
@@ -140,16 +144,34 @@ class DoctorHomeScreenState extends ConsumerState<DoctorHomeScreen> {
             const Text('Novedades', style: TextStyle(fontSize: 22, color: Colors.blue)),
             Expanded(
               child: ListView.builder(
-                itemCount: newsTitle.length,
+                itemCount: newsList.length,
                 itemBuilder: (context, index) {
                   return Card(
                     color: const Color.fromARGB(255, 194, 245, 255),
-                    child: ListTile(
-                      title: Text(newsTitle[index],
-                      style: const TextStyle(fontSize: 20)),
-                      subtitle: Text(news[index]),
-                      leading: const Icon(Icons.newspaper),
-                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(14),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if(newsList[index].image != null)
+                              Image.asset(
+                                newsList[index].image!,
+                                width: double.infinity,
+                                fit: BoxFit.contain,
+                              ),
+                            ListTile(
+                                title: Text(
+                                  newsList[index].title,
+                                  style: const TextStyle(fontSize: 20, ),
+                                  
+                                ),
+                                subtitle: Text(newsList[index].text),
+                                //leading: const Icon(Icons.newspaper),
+                                
+                              ),
+                          ],
+                        ),
+                    )                
                   );
                 },
               ),

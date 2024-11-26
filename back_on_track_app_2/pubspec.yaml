@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 0.1.0
 
 environment:
-  sdk: '3.4.3'
+  sdk: '3.3.1'
 
 dependencies:
   cloud_firestore: ^5.1.0
@@ -26,3 +26,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/expomeca.jpg
+    - assets/grafico.jpg
+    - assets/logo3.png

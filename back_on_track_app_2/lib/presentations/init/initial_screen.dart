@@ -14,16 +14,14 @@ class InitialScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Back On \nTrack',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 34,
-                //fontFamily:
-              ),
+            SizedBox(
+              height: 250,
+              child: Image.asset(
+                'assets/logo3.png',
+                fit: BoxFit.contain
+              )
             ),
             
-            const SizedBox(height: 30.0),
             ElevatedButton(
                 onPressed: () {
                   context.pushNamed(LoginScreen.name);

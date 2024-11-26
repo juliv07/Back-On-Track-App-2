@@ -1,4 +1,6 @@
+import 'package:back_on_track_app_2/entities/News.dart';
 import 'package:back_on_track_app_2/entities/User.dart';
+import 'package:back_on_track_app_2/providers/news_provider.dart';
 import 'package:back_on_track_app_2/providers/user_data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -79,6 +81,7 @@ class _NavigationExampleState extends State<NavigationExample> {
     return Consumer(builder: (context, ref, child) {
       
       User userInfo = ref.watch(userInfoProvider);
+      List<News> newsList = ref.watch(newsProvider);
 
       return Scaffold(
         appBar: AppBar(title: Text('Bienvenido, ${userInfo.name}'),),
@@ -116,16 +119,34 @@ class _NavigationExampleState extends State<NavigationExample> {
               const Text('Novedades', style: TextStyle(fontSize: 22, color: Colors.blue)),
               Expanded(
                 child: ListView.builder(
-                  itemCount: newsTitle.length,
+                  itemCount: newsList.length,
                   itemBuilder: (context, index) {
                     return Card(
                       color: const Color.fromARGB(255, 194, 245, 255),
-                      child: ListTile(
-                        title: Text(newsTitle[index],
-                        style: const TextStyle(fontSize: 20)),
-                        subtitle: Text(news[index]),
-                        leading: const Icon(Icons.newspaper),
-                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(14),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if(newsList[index].image != null)
+                                Image.asset(
+                                  newsList[index].image!,
+                                  width: double.infinity,
+                                  fit: BoxFit.contain,
+                                ),
+                              ListTile(
+                                  title: Text(
+                                    newsList[index].title,
+                                    style: const TextStyle(fontSize: 20, ),
+                                    
+                                  ),
+                                  subtitle: Text(newsList[index].text),
+                                  //leading: const Icon(Icons.newspaper),
+                                  
+                                ),
+                            ],
+                          ),
+                      )                
                     );
                   },
                 ),

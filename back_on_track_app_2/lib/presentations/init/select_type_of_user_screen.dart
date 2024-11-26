@@ -17,17 +17,13 @@ class SelectType extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          const Text(
-            'Back On \nTrack',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 34,
-              //fontFamily:
-            ),
+          SizedBox(
+            height: 200,
+            child: Image.asset(
+              'assets/logo3.png',
+              fit: BoxFit.contain
+            )
           ),
-
-          const SizedBox(
-              height: 30.0), // Esto agrega espacio entre el texto y los botones
 
           ElevatedButton(
             onPressed: () {

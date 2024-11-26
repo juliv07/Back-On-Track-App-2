@@ -19,15 +19,13 @@ class LogoutScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'Back On \nTrack',textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 34,
-                  //fontFamily: 
-                ),
-              ),
-            
-              const SizedBox(height: 30.0),
+              SizedBox(
+              height: 200,
+              child: Image.asset(
+                'assets/logo3.png',
+                fit: BoxFit.contain
+              )
+            ),
 
               const Text('¿Estás seguro que querés cerrar sesión?'),
               ElevatedButton(onPressed: (){

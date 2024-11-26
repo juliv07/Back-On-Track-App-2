@@ -129,7 +129,7 @@ class PatientDataScreen extends ConsumerWidget {
                   ),
                   Visibility(
                     visible: tracking.timestamp != 0,
-                    child: Text(date.toString().substring(0, 19)), 
+                    child: Text('Última actualidación: ${date.toString().substring(0, 19)}'), 
                   ),
                   
                   const SizedBox(height: 20),
